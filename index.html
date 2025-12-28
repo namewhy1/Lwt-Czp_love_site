@@ -2279,8 +2279,24 @@
             initializeSite();
         }
         
-        // 页面加载时先加载密码配置
+        // 页面加载时先加载密码配置（本地缓存）
         loadPasswordConfig();
+
+        // 如果已解锁并且 initializeSite 会从云端同步密码配置，等同步完成后再刷新一次密码页文案
+        async function refreshPasswordConfigFromCloudIfAny() {
+            try {
+                const res = await fetch('/api/config/get', { cache: 'no-store' });
+                if (!res.ok) return;
+                const data = await res.json();
+                if (!data || !data.config) return;
+                const cloud = (typeof data.config === 'string') ? JSON.parse(data.config) : data.config;
+                if (cloud && cloud.password) {
+                    localStorage.setItem('lovesite_password', JSON.stringify(cloud.password));
+                    loadPasswordConfig();
+                }
+            } catch (_) {}
+        }
+        refreshPasswordConfigFromCloudIfAny();
         
         // 监听回车键
         document.getElementById('passwordInput').addEventListener('keypress', function(e) {
@@ -2493,8 +2509,8 @@
                     const basic = cloud.basic;
                     if (basic.loveDate) CONFIG.loveDate = basic.loveDate;
                     if (basic.typewriterTexts) CONFIG.typewriterTexts = basic.typewriterTexts;
-                    if (basic.siteTitle) CONFIG.siteTitle = basic.siteTitle;
-                    if (basic.siteSubtitle) CONFIG.siteSubtitle = basic.siteSubtitle;
+                    if (typeof basic.siteTitle === 'string') CONFIG.siteTitle = basic.siteTitle;
+                    if (typeof basic.siteSubtitle === 'string') CONFIG.siteSubtitle = basic.siteSubtitle;
 
                     // 同步到本地缓存
                     localStorage.setItem('lovesite_basic', JSON.stringify(basic));
@@ -2592,15 +2608,117 @@
             }
             
             // 应用页脚
-            if (CONFIG.footer) {
-                const footerDate = document.getElementById('footerDate');
-                if (footerDate) footerDate.textContent = CONFIG.footer.date || 'February 2025';
-            }
-            
+            applyFooterAndNav();
+
+            // 应用相册/时间轴（完全由后台控制数量）
+            renderPhotosFromConfig();
+            renderTimelineFromConfig();
+
             // 应用心愿清单
             if (CONFIG.wishlist && CONFIG.wishlist.enabled) {
                 renderWishlist();
             }
+        }
+
+        function applyFooterAndNav() {
+            // footer
+            if (CONFIG.footer) {
+                const footerTextEl = document.getElementById('footerText');
+                const footerDateEl = document.getElementById('footerDate');
+
+                const text = (typeof CONFIG.footer.text === 'string') ? CONFIG.footer.text : 'Made with ♥';
+                const date = (typeof CONFIG.footer.date === 'string') ? CONFIG.footer.date : 'February 2025';
+
+                if (footerDateEl) footerDateEl.textContent = date;
+                // footerText 里原本包含 ♥ 的 span，这里保持结构：只替换整句
+                if (footerTextEl) {
+                    footerTextEl.innerHTML = `${escapeHtml(text).replace('♥', '<span>♥</span>')} <span id="footerDate">${escapeHtml(date)}</span>`;
+                }
+            }
+
+            // nav
+            const navMenu = document.getElementById('navMenu');
+            if (navMenu && CONFIG.footer && Array.isArray(CONFIG.footer.navItems)) {
+                const items = CONFIG.footer.navItems.filter(i => i && i.enabled !== false && i.href && i.name);
+                if (items.length > 0) {
+                    navMenu.innerHTML = items.map(i => `<li><a href="${escapeAttr(i.href)}">${escapeHtml(i.name)}</a></li>`).join('');
+                }
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
+        }
+        function escapeAttr(str) {
+            // href only
+            return String(str).replaceAll('"', '%22');
+        }
+
+        function renderPhotosFromConfig() {
+            if (!Array.isArray(CONFIG.photos) || CONFIG.photos.length === 0) return;
+
+            const slider = document.querySelector('.photo-slider');
+            const thumbnailsWrap = document.querySelector('.photo-thumbnails');
+            const dotsWrap = document.querySelector('.slider-controls');
+            const caption = document.getElementById('photoCaption');
+            if (!slider || !dotsWrap || !caption) return;
+
+            // 移除旧的图片节点（保留 caption/arrows/dots 容器）
+            slider.querySelectorAll('img.photo').forEach(n => n.remove());
+
+            // 生成图片
+            CONFIG.photos.forEach((p, idx) => {
+                const img = document.createElement('img');
+                img.src = p.url;
+                img.className = 'photo' + (idx === 0 ? ' active' : '');
+                img.alt = `我们的照片${idx + 1}`;
+                slider.insertBefore(img, caption);
+            });
+
+            // dots
+            dotsWrap.innerHTML = CONFIG.photos.map((_, idx) => {
+                return `<button class="slider-dot ${idx === 0 ? 'active' : ''}" onclick="showPhoto(${idx})"></button>`;
+            }).join('');
+
+            // thumbnails
+            if (thumbnailsWrap) {
+                thumbnailsWrap.innerHTML = CONFIG.photos.map((p, idx) => {
+                    return `<img src="${escapeAttr(p.url)}" class="thumbnail ${idx === 0 ? 'active' : ''}" onclick="showPhoto(${idx})" alt="缩略图${idx + 1}">`;
+                }).join('');
+            }
+
+            caption.textContent = CONFIG.photos[0]?.caption || '每一张照片，都是一段美好的回忆';
+            currentPhoto = 0;
+            resetAutoSlide();
+        }
+
+        function renderTimelineFromConfig() {
+            if (!Array.isArray(CONFIG.timeline) || CONFIG.timeline.length === 0) return;
+            const timeline = document.querySelector('.timeline');
+            if (!timeline) return;
+
+            timeline.innerHTML = CONFIG.timeline.map((item) => {
+                const date = item?.date ?? '';
+                const title = item?.title ?? '';
+                const content = item?.content ?? '';
+                return `
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-card">
+                                <p class="timeline-date">${escapeHtml(date)}</p>
+                                <h3>${escapeHtml(title)}</h3>
+                                <p>${escapeHtml(content)}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
         
         // ============ 心愿清单 ============
