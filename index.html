@@ -2408,7 +2408,9 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.config) {
-                        applyCloudConfigToLocal(data.config);
+                        // 兼容：如果后端返回的是 JSON 字符串，这里解析
+                        const cloudConfig = (typeof data.config === 'string') ? JSON.parse(data.config) : data.config;
+                        applyCloudConfigToLocal(cloudConfig);
                         return;
                     }
                 }
