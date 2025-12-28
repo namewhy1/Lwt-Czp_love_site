@@ -1,0 +1,2242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遇见你，真好</title>
+    
+    <!-- 引入优美的字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-pink: #e8a4b8;
+            --secondary-pink: #f5d0d8;
+            --accent-rose: #d4a5a5;
+            --warm-cream: #faf6f2;
+            --soft-purple: #c9b8d0;
+            --text-dark: #4a3f44;
+            --text-light: #6b5b5f;
+            --gold-accent: #d4af37;
+            --deep-rose: #c77d8e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: var(--warm-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            line-height: 1.8;
+            cursor: default;
+        }
+
+        /* 优雅的滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--warm-cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary-pink), var(--soft-purple));
+            border-radius: 10px;
+        }
+
+        /* 鼠标跟随星光效果 */
+        .cursor-sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 12px;
+            animation: sparkle-fade 1s ease-out forwards;
+            color: var(--primary-pink);
+            text-shadow: 0 0 10px var(--primary-pink);
+        }
+
+        @keyframes sparkle-fade {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0) rotate(180deg);
+            }
+        }
+
+        /* 飘落花瓣效果 */
+        .petal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            top: -50px;
+            animation: fall linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
+
+        .petal svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--primary-pink);
+            filter: drop-shadow(0 2px 4px rgba(232, 164, 184, 0.3));
+        }
+
+        /* 背景装饰 */
+        .bg-decoration {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            opacity: 0.08;
+            animation: floatHeart 15s ease-in-out infinite;
+        }
+
+        .heart-1 { top: 10%; left: 5%; font-size: 3rem; animation-delay: 0s; }
+        .heart-2 { top: 30%; right: 8%; font-size: 2rem; animation-delay: 3s; }
+        .heart-3 { top: 60%; left: 10%; font-size: 2.5rem; animation-delay: 6s; }
+        .heart-4 { top: 80%; right: 15%; font-size: 1.8rem; animation-delay: 9s; }
+        .heart-5 { top: 45%; left: 85%; font-size: 2.2rem; animation-delay: 12s; }
+
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            25% { transform: translateY(-20px) rotate(5deg) scale(1.05); }
+            50% { transform: translateY(-10px) rotate(-3deg) scale(1); }
+            75% { transform: translateY(-25px) rotate(3deg) scale(1.03); }
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 3rem;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(250, 246, 242, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: var(--primary-pink);
+        }
+
+        /* 移动端汉堡菜单 */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--text-dark);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 6rem 2rem;
+            background: linear-gradient(180deg, 
+                rgba(232, 164, 184, 0.1) 0%, 
+                rgba(250, 246, 242, 0) 100%);
+        }
+
+        .hero-decoration {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(232, 164, 184, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: pulse-ring 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.5; }
+        }
+
+        .hero-decoration::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            right: -30px;
+            bottom: -30px;
+            border: 1px solid rgba(232, 164, 184, 0.1);
+            border-radius: 50%;
+        }
+
+        .hero-subtitle {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 1rem;
+            letter-spacing: 8px;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .hero h1 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 5rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+            position: relative;
+        }
+
+        .hero h1::before,
+        .hero h1::after {
+            content: '♡';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--primary-pink);
+            opacity: 0.6;
+            animation: heart-float 2s ease-in-out infinite;
+        }
+
+        .hero h1::before { left: -3rem; animation-delay: 0s; }
+        .hero h1::after { right: -3rem; animation-delay: 0.5s; }
+
+        @keyframes heart-float {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-60%) scale(1.2); }
+        }
+
+        /* 打字机效果容器 */
+        .typewriter-container {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-quote {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+            max-width: 400px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        .typewriter {
+            display: inline;
+            border-right: 2px solid var(--primary-pink);
+            animation: blink-cursor 0.8s step-end infinite;
+        }
+
+        @keyframes blink-cursor {
+            50% { border-color: transparent; }
+        }
+
+        /* 恋爱计数器 */
+        .love-counter {
+            margin-top: 3rem;
+            padding: 1.5rem 3rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(232, 164, 184, 0.2);
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+            border: 1px solid rgba(232, 164, 184, 0.3);
+        }
+
+        .love-counter-title {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: var(--text-light);
+            margin-bottom: 0.8rem;
+        }
+
+        .love-counter-days {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .counter-number {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 3.5rem;
+            color: var(--deep-rose);
+            line-height: 1;
+            background: linear-gradient(135deg, var(--primary-pink), var(--deep-rose));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .counter-label {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .counter-details {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .counter-detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .counter-detail-num {
+            font-size: 1.2rem;
+            color: var(--primary-pink);
+            font-weight: 500;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeInUp 1s ease 1.2s forwards;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(180deg, var(--primary-pink), transparent);
+            margin: 0 auto;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.5; }
+        }
+
+        /* 区块标题 */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-header h2 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: var(--text-light);
+        }
+
+        .section-header .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .section-header .divider span {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-pink));
+        }
+
+        .section-header .divider span:last-child {
+            background: linear-gradient(90deg, var(--primary-pink), transparent);
+        }
+
+        .section-header .divider::before {
+            content: '✧';
+            color: var(--primary-pink);
+            font-size: 0.8rem;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* 相册区域 */
+        .gallery-section {
+            padding: 6rem 0;
+        }
+
+        .photo-gallery {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+        }
+
+        .photo-frame {
+            position: relative;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(232, 164, 184, 0.3);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .photo-slider {
+            position: relative;
+            height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .photo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.2s ease, transform 1.2s ease;
+            object-fit: cover;
+            transform: scale(1.05);
+        }
+
+        .photo.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 3rem 2rem 2rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+            color: white;
+            text-align: center;
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 2px;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: none;
+        }
+
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.3);
+        }
+
+        .slider-arrows {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+            pointer-events: none;
+        }
+
+        .arrow-btn {
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            font-size: 1.2rem;
+        }
+
+        .arrow-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* 照片缩略图 */
+        .photo-thumbnails {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 0 20px;
+        }
+
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail.active {
+            opacity: 1;
+            border-color: var(--primary-pink);
+            transform: scale(1.1);
+        }
+
+        .thumbnail:hover {
+            opacity: 0.8;
+        }
+
+        /* 音乐区域 */
+        .music-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                rgba(232, 164, 184, 0.08) 50%,
+                transparent 100%);
+        }
+
+        .music-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .music-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-pink), var(--soft-purple), var(--primary-pink));
+            background-size: 200% 100%;
+            animation: gradient-flow 3s ease infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .music-vinyl {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .vinyl-disc {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #333 50%, #1a1a1a 100%);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .vinyl-disc.spinning {
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .vinyl-disc::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .vinyl-disc::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #1a1a1a;
+        }
+
+        .vinyl-grooves {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            right: 10%;
+            bottom: 10%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .vinyl-grooves::before,
+        .vinyl-grooves::after {
+            content: '';
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+        }
+
+        .vinyl-grooves::before {
+            top: 15%;
+            left: 15%;
+            right: 15%;
+            bottom: 15%;
+        }
+
+        .vinyl-grooves::after {
+            top: 30%;
+            left: 30%;
+            right: 30%;
+            bottom: 30%;
+        }
+
+        .music-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .music-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .music-artist {
+            font-family: 'ZCOOL XiaoWei', serif;
+            color: var(--text-light);
+            letter-spacing: 3px;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .play-btn {
+            width: 70px;
+            height: 70px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(232, 164, 184, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 40px rgba(232, 164, 184, 0.5);
+        }
+
+        .control-btn {
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--secondary-pink);
+            background: transparent;
+            border-radius: 50%;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--secondary-pink);
+            color: white;
+        }
+
+        /* 进度条 - 可拖动 */
+        .progress-container {
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(232, 164, 184, 0.2);
+            border-radius: 3px;
+            overflow: visible;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-pink), var(--soft-purple));
+            border-radius: 3px;
+            transition: width 0.1s linear;
+            position: relative;
+        }
+
+        .progress-handle {
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            background: white;
+            border: 3px solid var(--primary-pink);
+            border-radius: 50%;
+            cursor: grab;
+            transition: transform 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-handle:hover {
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* 音量控制 */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .volume-icon {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .volume-icon:hover {
+            color: var(--primary-pink);
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(232, 164, 184, 0.3);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--primary-pink);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* 时间轴区域 */
+        .timeline-section {
+            padding: 6rem 0;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                transparent, 
+                var(--primary-pink) 10%, 
+                var(--primary-pink) 90%, 
+                transparent);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            text-align: right;
+            margin-right: 3rem;
+            margin-left: 0;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 3rem;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid var(--primary-pink);
+            border-radius: 50%;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-marker {
+            transform: translateX(-50%) scale(1.3);
+            background: var(--primary-pink);
+        }
+
+        .timeline-marker::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--primary-pink);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-marker::before {
+            background: white;
+        }
+
+        .timeline-content {
+            flex: 1;
+            max-width: calc(50% - 3rem);
+        }
+
+        .timeline-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(232, 164, 184, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        }
+
+        .timeline-card:hover::after {
+            opacity: 1;
+        }
+
+        .timeline-date {
+            font-family: 'ZCOOL XiaoWei', serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--primary-pink);
+            margin-bottom: 0.8rem;
+        }
+
+        .timeline-card h3 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 0.8rem;
+        }
+
+        .timeline-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 留言区域 */
+        .message-section {
+            padding: 8rem 0;
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                rgba(232, 164, 184, 0.1) 50%,
+                rgba(201, 184, 208, 0.1) 100%);
+        }
+
+        .message-card {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .message-quote {
+            font-size: 4rem;
+            color: var(--primary-pink);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .message-content {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            line-height: 2.2;
+            margin-bottom: 2rem;
+        }
+
+        .message-signature {
+            font-family: 'ZCOOL XiaoWei', serif;
+            color: var(--text-light);
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+        }
+
+        .message-signature::before {
+            content: '—— ';
+        }
+
+        .heart-decoration {
+            margin-top: 3rem;
+            font-size: 2rem;
+            color: var(--primary-pink);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.15); }
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
+        }
+
+        footer p {
+            font-family: 'ZCOOL XiaoWei', serif;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        footer span {
+            color: var(--primary-pink);
+            animation: heartbeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .admin-link {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0.3;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .admin-link:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* 动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 加载动画 */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--warm-cream);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-heart {
+            font-size: 3rem;
+            color: var(--primary-pink);
+            animation: loading-pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes loading-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        .loading-text {
+            margin-top: 1rem;
+            font-family: 'ZCOOL XiaoWei', serif;
+            color: var(--text-light);
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(232, 164, 184, 0.4);
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(232, 164, 184, 0.5);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero h1::before,
+            .hero h1::after {
+                display: none;
+            }
+
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(250, 246, 242, 0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            nav ul.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 1.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .mobile-menu-btn.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .mobile-menu-btn.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-btn.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            nav a {
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+            }
+
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .photo-slider {
+                height: 300px;
+            }
+
+            .photo-thumbnails {
+                display: none;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(odd) {
+                flex-direction: column;
+            }
+
+            .timeline-marker {
+                left: 20px;
+            }
+
+            .timeline-content,
+            .timeline-item:nth-child(odd) .timeline-content {
+                max-width: 100%;
+                margin-left: 50px !important;
+                margin-right: 0 !important;
+                text-align: left !important;
+            }
+
+            .message-content {
+                font-size: 1.4rem;
+            }
+
+            .music-vinyl {
+                width: 150px;
+                height: 150px;
+            }
+
+            .vinyl-disc::before {
+                width: 60px;
+                height: 60px;
+            }
+
+            .love-counter {
+                padding: 1rem 1.5rem;
+            }
+
+            .counter-number {
+                font-size: 2.5rem;
+            }
+
+            .counter-details {
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .music-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .music-controls {
+                gap: 1rem;
+            }
+
+            .play-btn {
+                width: 60px;
+                height: 60px;
+            }
+
+            .control-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.85rem;
+                letter-spacing: 4px;
+            }
+
+            .hero-quote {
+                font-size: 0.95rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .photo-slider {
+                height: 250px;
+            }
+
+            .timeline-card {
+                padding: 1.5rem;
+            }
+
+            .timeline-card h3 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-heart">♥</div>
+        <p class="loading-text">加载中...</p>
+    </div>
+
+    <!-- 花瓣容器 -->
+    <div class="petal-container" id="petalContainer"></div>
+
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+        <div class="floating-heart heart-1">♡</div>
+        <div class="floating-heart heart-2">♡</div>
+        <div class="floating-heart heart-3">♡</div>
+        <div class="floating-heart heart-4">♡</div>
+        <div class="floating-heart heart-5">♡</div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav id="navbar">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul id="navMenu">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#gallery">相册</a></li>
+            <li><a href="#music">音乐</a></li>
+            <li><a href="#timeline">故事</a></li>
+            <li><a href="#message">心语</a></li>
+        </ul>
+    </nav>
+
+    <!-- 首页 -->
+    <section id="home" class="hero">
+        <div class="hero-decoration"></div>
+        <p class="hero-subtitle">献给最特别的你</p>
+        <h1>遇见你，真好</h1>
+        <div class="typewriter-container">
+            <p class="hero-quote">「<span class="typewriter" id="typewriter"></span>」</p>
+        </div>
+        
+        <!-- 恋爱计数器 -->
+        <div class="love-counter">
+            <p class="love-counter-title">我们已经在一起</p>
+            <div class="love-counter-days">
+                <span class="counter-number" id="daysCount">0</span>
+                <span class="counter-label">天</span>
+            </div>
+            <div class="counter-details">
+                <div class="counter-detail-item">
+                    <span class="counter-detail-num" id="hoursCount">0</span>
+                    <span>小时</span>
+                </div>
+                <div class="counter-detail-item">
+                    <span class="counter-detail-num" id="minutesCount">0</span>
+                    <span>分钟</span>
+                </div>
+                <div class="counter-detail-item">
+                    <span class="counter-detail-num" id="secondsCount">0</span>
+                    <span>秒</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- 相册 -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>美好瞬间</h2>
+                <p>PRECIOUS MOMENTS</p>
+                <div class="divider">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="photo-gallery fade-in">
+                <div class="photo-frame">
+                    <div class="photo-slider">
+                        <img src="https://picsum.photos/1200/800?random=1" class="photo active" alt="照片1">
+                        <img src="https://picsum.photos/1200/800?random=2" class="photo" alt="照片2">
+                        <img src="https://picsum.photos/1200/800?random=3" class="photo" alt="照片3">
+                        <img src="https://picsum.photos/1200/800?random=4" class="photo" alt="照片4">
+                        
+                        <div class="photo-caption" id="photoCaption">每一张照片，都是一段美好的回忆</div>
+                        
+                        <div class="slider-arrows">
+                            <button class="arrow-btn" onclick="prevPhoto()">‹</button>
+                            <button class="arrow-btn" onclick="nextPhoto()">›</button>
+                        </div>
+                        
+                        <div class="slider-controls">
+                            <button class="slider-dot active" onclick="showPhoto(0)"></button>
+                            <button class="slider-dot" onclick="showPhoto(1)"></button>
+                            <button class="slider-dot" onclick="showPhoto(2)"></button>
+                            <button class="slider-dot" onclick="showPhoto(3)"></button>
+                        </div>
+                    </div>
+                    
+                    <!-- 缩略图 -->
+                    <div class="photo-thumbnails">
+                        <img src="https://picsum.photos/1200/800?random=1" class="thumbnail active" onclick="showPhoto(0)" alt="缩略图1">
+                        <img src="https://picsum.photos/1200/800?random=2" class="thumbnail" onclick="showPhoto(1)" alt="缩略图2">
+                        <img src="https://picsum.photos/1200/800?random=3" class="thumbnail" onclick="showPhoto(2)" alt="缩略图3">
+                        <img src="https://picsum.photos/1200/800?random=4" class="thumbnail" onclick="showPhoto(3)" alt="缩略图4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 音乐 -->
+    <section id="music" class="music-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>我们的歌</h2>
+                <p>OUR SONG</p>
+                <div class="divider">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="music-card fade-in">
+                <div class="music-vinyl">
+                    <div class="vinyl-disc" id="vinylDisc">
+                        <div class="vinyl-grooves"></div>
+                    </div>
+                </div>
+                
+                <div class="music-info">
+                    <h3 class="music-title">晴天</h3>
+                    <p class="music-artist">周杰伦</p>
+                </div>
+                
+                <div class="music-controls">
+                    <button class="control-btn" onclick="prevSong()">⏮</button>
+                    <button class="play-btn" id="playBtn" onclick="toggleMusic()">
+                        <span id="playIcon">▶</span>
+                    </button>
+                    <button class="control-btn" onclick="nextSong()">⏭</button>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar" onclick="seekMusic(event)">
+                        <div class="progress-fill" id="progressFill">
+                            <div class="progress-handle"></div>
+                        </div>
+                    </div>
+                    <div class="time-display">
+                        <span id="currentTime">0:00</span>
+                        <span id="totalTime">0:00</span>
+                    </div>
+                </div>
+                
+                <div class="volume-control">
+                    <span class="volume-icon" id="volumeIcon" onclick="toggleMute()">🔊</span>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70" oninput="changeVolume(this.value)">
+                </div>
+            </div>
+        </div>
+        
+        <audio id="bgMusic" src="your-music.mp3"></audio>
+    </section>
+
+    <!-- 时间轴 -->
+    <section id="timeline" class="timeline-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>我们的故事</h2>
+                <p>OUR STORY</p>
+                <div class="divider">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-card">
+                            <p class="timeline-date">2024年 · 春</p>
+                            <h3>初次相遇</h3>
+                            <p>缘分让我们在茫茫人海中相遇，那一刻仿佛时间都静止了，我知道你就是我一直在寻找的人。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-card">
+                            <p class="timeline-date">2024年 · 夏</p>
+                            <h3>渐渐熟悉</h3>
+                            <p>从陌生到熟悉，每一次对话都让我更了解你，发现你身上更多美好的特质。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-card">
+                            <p class="timeline-date">此刻 · 现在</p>
+                            <h3>未来可期</h3>
+                            <p>感谢命运的安排，让我遇见了你。期待与你一起，书写更多美好的篇章。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 留言 -->
+    <section id="message" class="message-section">
+        <div class="container">
+            <div class="message-card fade-in">
+                <div class="message-quote">"</div>
+                <p class="message-content">
+                    感谢你出现在我的生命里<br>
+                    让平凡的日子闪闪发光<br>
+                    愿未来的每一天<br>
+                    都有你的陪伴
+                </p>
+                <p class="message-signature">写给最特别的你</p>
+                <div class="heart-decoration">♥</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>Made with <span>♥</span> February 2025</p>
+        <a href="admin.html" class="admin-link" title="管理后台">⚙️</a>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // ============ 从管理后台读取配置 ============
+        
+        // 默认配置
+        let CONFIG = {
+            loveDate: '2025-12-24',
+            typewriterTexts: [
+                '时光温柔，记录下我们相遇的每一个瞬间',
+                '你是我最美丽的意外',
+                '遇见你是我最大的幸运',
+                '愿与你共度余生的每一天'
+            ],
+            siteTitle: '遇见你，真好',
+            siteSubtitle: '献给最特别的你',
+            photos: [
+                { url: 'https://picsum.photos/1200/800?random=1', caption: '每一张照片，都是一段美好的回忆' },
+                { url: 'https://picsum.photos/1200/800?random=2', caption: '你的笑容是我最爱的风景' },
+                { url: 'https://picsum.photos/1200/800?random=3', caption: '和你在一起的每一刻都很珍贵' },
+                { url: 'https://picsum.photos/1200/800?random=4', caption: '这是我们的故事' }
+            ],
+            music: {
+                title: '晴天',
+                artist: '周杰伦',
+                url: 'your-music.mp3'
+            },
+            timeline: [
+                { date: '2024年 · 春', title: '初次相遇', content: '缘分让我们在茫茫人海中相遇，那一刻仿佛时间都静止了，我知道你就是我一直在寻找的人。' },
+                { date: '2024年 · 夏', title: '渐渐熟悉', content: '从陌生到熟悉，每一次对话都让我更了解你，发现你身上更多美好的特质。' },
+                { date: '此刻 · 现在', title: '未来可期', content: '感谢命运的安排，让我遇见了你。期待与你一起，书写更多美好的篇章。' }
+            ],
+            message: {
+                content: '感谢你出现在我的生命里\n让平凡的日子闪闪发光\n愿未来的每一天\n都有你的陪伴',
+                signature: '写给最特别的你'
+            }
+        };
+        
+        // 从 localStorage 加载管理员设置
+        function loadAdminSettings() {
+            // 基础设置
+            const basicSettings = localStorage.getItem('lovesite_basic');
+            if (basicSettings) {
+                const basic = JSON.parse(basicSettings);
+                if (basic.loveDate) CONFIG.loveDate = basic.loveDate;
+                if (basic.typewriterTexts) CONFIG.typewriterTexts = basic.typewriterTexts;
+                if (basic.siteTitle) CONFIG.siteTitle = basic.siteTitle;
+                if (basic.siteSubtitle) CONFIG.siteSubtitle = basic.siteSubtitle;
+            }
+            
+            // 相册设置
+            const photoSettings = localStorage.getItem('lovesite_photos');
+            if (photoSettings) {
+                CONFIG.photos = JSON.parse(photoSettings);
+            }
+            
+            // 音乐设置
+            const musicSettings = localStorage.getItem('lovesite_music');
+            if (musicSettings) {
+                const music = JSON.parse(musicSettings);
+                if (music.title) CONFIG.music.title = music.title;
+                if (music.artist) CONFIG.music.artist = music.artist;
+                if (music.url) CONFIG.music.url = music.url;
+            }
+            
+            // 时间轴设置
+            const timelineSettings = localStorage.getItem('lovesite_timeline');
+            if (timelineSettings) {
+                CONFIG.timeline = JSON.parse(timelineSettings);
+            }
+            
+            // 心语设置
+            const messageSettings = localStorage.getItem('lovesite_message');
+            if (messageSettings) {
+                CONFIG.message = JSON.parse(messageSettings);
+            }
+        }
+        
+        // 应用设置到页面
+        function applySettings() {
+            // 应用标题
+            document.querySelector('.hero h1').textContent = CONFIG.siteTitle;
+            document.querySelector('.hero-subtitle').textContent = CONFIG.siteSubtitle;
+            document.title = CONFIG.siteTitle;
+            
+            // 应用相册
+            renderPhotos();
+            
+            // 应用音乐
+            document.querySelector('.music-title').textContent = CONFIG.music.title;
+            document.querySelector('.music-artist').textContent = CONFIG.music.artist;
+            if (CONFIG.music.url) {
+                document.getElementById('bgMusic').src = CONFIG.music.url;
+            }
+            
+            // 应用时间轴
+            renderTimeline();
+            
+            // 应用心语
+            const messageContent = CONFIG.message.content.split('\n').join('<br>');
+            document.querySelector('.message-content').innerHTML = messageContent;
+            document.querySelector('.message-signature').textContent = CONFIG.message.signature;
+        }
+        
+        // 渲染相册
+        function renderPhotos() {
+            const slider = document.querySelector('.photo-slider');
+            const thumbnailContainer = document.querySelector('.photo-thumbnails');
+            
+            // 清空现有照片（保留其他元素）
+            const existingPhotos = slider.querySelectorAll('.photo');
+            existingPhotos.forEach(p => p.remove());
+            
+            // 添加新照片
+            CONFIG.photos.forEach((photo, index) => {
+                const img = document.createElement('img');
+                img.src = photo.url;
+                img.className = 'photo' + (index === 0 ? ' active' : '');
+                img.alt = '照片' + (index + 1);
+                slider.insertBefore(img, slider.querySelector('.photo-caption'));
+            });
+            
+            // 更新控制点
+            const controlsContainer = slider.querySelector('.slider-controls');
+            controlsContainer.innerHTML = CONFIG.photos.map((_, index) => 
+                `<button class="slider-dot${index === 0 ? ' active' : ''}" onclick="showPhoto(${index})"></button>`
+            ).join('');
+            
+            // 更新缩略图
+            if (thumbnailContainer) {
+                thumbnailContainer.innerHTML = CONFIG.photos.map((photo, index) => 
+                    `<img src="${photo.url}" class="thumbnail${index === 0 ? ' active' : ''}" onclick="showPhoto(${index})" alt="缩略图${index + 1}">`
+                ).join('');
+            }
+            
+            // 重新获取元素引用
+            window.photos = document.querySelectorAll('.photo');
+            window.dots = document.querySelectorAll('.slider-dot');
+            window.thumbnails = document.querySelectorAll('.thumbnail');
+        }
+        
+        // 渲染时间轴
+        function renderTimeline() {
+            const timelineContainer = document.querySelector('.timeline');
+            timelineContainer.innerHTML = CONFIG.timeline.map((item, index) => `
+                <div class="timeline-item fade-in">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-card">
+                            <p class="timeline-date">${item.date}</p>
+                            <h3>${item.title}</h3>
+                            <p>${item.content}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // 重新观察新元素
+            document.querySelectorAll('.timeline .fade-in').forEach(el => observer.observe(el));
+        }
+        
+        // 获取配置的便捷函数
+        function getLoveStartDate() {
+            return new Date(CONFIG.loveDate);
+        }
+        
+        function getTypewriterTexts() {
+            return CONFIG.typewriterTexts;
+        }
+        
+        function getPhotoCaptions() {
+            return CONFIG.photos.map(p => p.caption);
+        }
+        
+        // 为了兼容性保留旧变量名
+        let LOVE_START_DATE;
+        let TYPEWRITER_TEXTS;
+        let PHOTO_CAPTIONS;
+        
+        // ============ 加载配置和初始化 ============
+        loadAdminSettings();
+        LOVE_START_DATE = getLoveStartDate();
+        TYPEWRITER_TEXTS = getTypewriterTexts();
+        PHOTO_CAPTIONS = getPhotoCaptions();
+        
+        // ============ 加载动画 ============
+        window.addEventListener('load', () => {
+            // 应用管理员设置
+            applySettings();
+            
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1500);
+        });
+        
+        // ============ 导航栏滚动效果 ============
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // 返回顶部按钮显示/隐藏
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // ============ 移动端菜单 ============
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // 点击菜单项关闭菜单
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+        
+        // ============ 打字机效果 ============
+        let typewriterIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterElement = document.getElementById('typewriter');
+        
+        function typeWriter() {
+            const texts = getTypewriterTexts();
+            const currentText = texts[typewriterIndex];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            let typeSpeed = isDeleting ? 50 : 100;
+            
+            if (!isDeleting && charIndex === currentText.length) {
+                typeSpeed = 2000; // 停顿时间
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                typewriterIndex = (typewriterIndex + 1) % texts.length;
+                typeSpeed = 500;
+            }
+            
+            setTimeout(typeWriter, typeSpeed);
+        }
+        
+        // 延迟启动打字机效果
+        setTimeout(typeWriter, 1500);
+        
+        // ============ 恋爱计数器 ============
+        function updateLoveCounter() {
+            const now = new Date();
+            const startDate = getLoveStartDate();
+            const diff = now - startDate;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('daysCount').textContent = days;
+            document.getElementById('hoursCount').textContent = hours;
+            document.getElementById('minutesCount').textContent = minutes;
+            document.getElementById('secondsCount').textContent = seconds;
+        }
+        
+        updateLoveCounter();
+        setInterval(updateLoveCounter, 1000);
+        
+        // ============ 飘落花瓣效果 ============
+        const petalContainer = document.getElementById('petalContainer');
+        const petalTypes = ['🌸', '💕', '✿', '❀', '♡'];
+        
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.innerHTML = `<span style="font-size: ${Math.random() * 15 + 10}px; opacity: ${Math.random() * 0.5 + 0.3}">${petalTypes[Math.floor(Math.random() * petalTypes.length)]}</span>`;
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            petal.style.animationDelay = Math.random() * 2 + 's';
+            
+            petalContainer.appendChild(petal);
+            
+            setTimeout(() => {
+                petal.remove();
+            }, 15000);
+        }
+        
+        // 每隔一段时间创建花瓣
+        setInterval(createPetal, 800);
+        
+        // 初始创建一些花瓣
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createPetal, i * 200);
+        }
+        
+        // ============ 鼠标跟随星光效果 ============
+        let lastSparkleTime = 0;
+        const sparkleDelay = 50; // 星光生成间隔
+        
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastSparkleTime < sparkleDelay) return;
+            lastSparkleTime = now;
+            
+            const sparkle = document.createElement('div');
+            sparkle.className = 'cursor-sparkle';
+            sparkle.innerHTML = ['✦', '✧', '★', '☆', '✴', '❋'][Math.floor(Math.random() * 6)];
+            sparkle.style.left = e.clientX + 'px';
+            sparkle.style.top = e.clientY + 'px';
+            sparkle.style.fontSize = (Math.random() * 8 + 8) + 'px';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000);
+        });
+
+        // ============ 照片轮播 ============
+        let currentPhoto = 0;
+        let photos = document.querySelectorAll('.photo');
+        let dots = document.querySelectorAll('.slider-dot');
+        let thumbnails = document.querySelectorAll('.thumbnail');
+        const photoCaption = document.getElementById('photoCaption');
+        let autoSlideInterval;
+
+        function showPhoto(index) {
+            // 重新获取最新的元素（因为可能被动态更新了）
+            photos = document.querySelectorAll('.photo');
+            dots = document.querySelectorAll('.slider-dot');
+            thumbnails = document.querySelectorAll('.thumbnail');
+            
+            if (photos.length === 0) return;
+            
+            if (photos[currentPhoto]) photos[currentPhoto].classList.remove('active');
+            if (dots[currentPhoto]) dots[currentPhoto].classList.remove('active');
+            if (thumbnails[currentPhoto]) thumbnails[currentPhoto].classList.remove('active');
+            
+            currentPhoto = index;
+            if (currentPhoto >= photos.length) currentPhoto = 0;
+            if (currentPhoto < 0) currentPhoto = photos.length - 1;
+            
+            if (photos[currentPhoto]) photos[currentPhoto].classList.add('active');
+            if (dots[currentPhoto]) dots[currentPhoto].classList.add('active');
+            if (thumbnails[currentPhoto]) thumbnails[currentPhoto].classList.add('active');
+            
+            // 更新说明文字
+            const captions = getPhotoCaptions();
+            if (captions[currentPhoto]) {
+                photoCaption.textContent = captions[currentPhoto];
+            }
+            
+            // 重置自动轮播
+            resetAutoSlide();
+        }
+
+        function nextPhoto() {
+            showPhoto(currentPhoto + 1);
+        }
+
+        function prevPhoto() {
+            showPhoto(currentPhoto - 1);
+        }
+        
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(nextPhoto, 5000);
+        }
+
+        // 启动自动轮播
+        autoSlideInterval = setInterval(nextPhoto, 5000);
+        
+        // 键盘控制
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevPhoto();
+            if (e.key === 'ArrowRight') nextPhoto();
+        });
+        
+        // 触摸滑动支持
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        const photoSlider = document.querySelector('.photo-slider');
+        photoSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        photoSlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) {
+                nextPhoto();
+            } else if (touchEndX > touchStartX + swipeThreshold) {
+                prevPhoto();
+            }
+        }
+
+        // ============ 音乐控制 ============
+        let isPlaying = false;
+        let isMuted = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const playIcon = document.getElementById('playIcon');
+        const vinylDisc = document.getElementById('vinylDisc');
+        const progressFill = document.getElementById('progressFill');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalTimeEl = document.getElementById('totalTime');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeIcon = document.getElementById('volumeIcon');
+
+        // 设置初始音量
+        bgMusic.volume = 0.7;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                playIcon.textContent = '▶';
+                vinylDisc.classList.remove('spinning');
+            } else {
+                bgMusic.play().catch(() => {
+                    console.log('需要用户交互才能播放音乐');
+                });
+                playIcon.textContent = '❚❚';
+                vinylDisc.classList.add('spinning');
+            }
+            isPlaying = !isPlaying;
+        }
+        
+        function prevSong() {
+            bgMusic.currentTime = 0;
+        }
+        
+        function nextSong() {
+            bgMusic.currentTime = 0;
+        }
+
+        // 进度条更新
+        bgMusic.addEventListener('timeupdate', () => {
+            if (bgMusic.duration) {
+                const progress = (bgMusic.currentTime / bgMusic.duration) * 100;
+                progressFill.style.width = progress + '%';
+                currentTimeEl.textContent = formatTime(bgMusic.currentTime);
+            }
+        });
+        
+        // 音频加载完成后显示总时长
+        bgMusic.addEventListener('loadedmetadata', () => {
+            totalTimeEl.textContent = formatTime(bgMusic.duration);
+        });
+        
+        // 点击进度条跳转
+        function seekMusic(e) {
+            const rect = progressBar.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            bgMusic.currentTime = pos * bgMusic.duration;
+        }
+        
+        // 音量控制
+        function changeVolume(value) {
+            bgMusic.volume = value / 100;
+            updateVolumeIcon(value);
+        }
+        
+        function toggleMute() {
+            isMuted = !isMuted;
+            bgMusic.muted = isMuted;
+            if (isMuted) {
+                volumeIcon.textContent = '🔇';
+            } else {
+                updateVolumeIcon(volumeSlider.value);
+            }
+        }
+        
+        function updateVolumeIcon(value) {
+            if (value == 0) {
+                volumeIcon.textContent = '🔇';
+            } else if (value < 50) {
+                volumeIcon.textContent = '🔉';
+            } else {
+                volumeIcon.textContent = '🔊';
+            }
+        }
+        
+        // 格式化时间
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // ============ 滚动动画 ============
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // ============ 平滑滚动 ============
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+        
+        // ============ 控制台彩蛋 ============
+        console.log('%c💕 这是送给最特别的人的网站 💕', 'color: #e8a4b8; font-size: 20px; font-weight: bold;');
+        console.log('%c愿你们永远幸福！', 'color: #c9b8d0; font-size: 14px;');
+    </script>
+</body>
+</html>
