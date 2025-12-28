@@ -910,14 +910,29 @@
     <!-- 侧边栏 -->
     <div class="sidebar">
         <div class="logo">
-            <h1>💕 网站管理后台</h1>
-            <p>遇见你，真好</p>
+            <h1>💕 管理后台</h1>
+            <p>让爱情网站更完美</p>
         </div>
+        
+        <div class="nav-section">基础配置</div>
         <ul class="nav-menu">
             <li class="nav-item active" data-panel="basic">
                 <span>⚙️</span>
                 <span>基础设置</span>
             </li>
+            <li class="nav-item" data-panel="password">
+                <span>🔐</span>
+                <span>密码设置</span>
+            </li>
+            <li class="nav-item" data-panel="theme">
+                <span>🎨</span>
+                <span>主题样式</span>
+                <span class="badge">新</span>
+            </li>
+        </ul>
+        
+        <div class="nav-section">内容管理</div>
+        <ul class="nav-menu">
             <li class="nav-item" data-panel="photos">
                 <span>🖼️</span>
                 <span>相册管理</span>
@@ -935,16 +950,50 @@
                 <span>心语留言</span>
             </li>
         </ul>
+        
+        <div class="nav-section">创意功能</div>
+        <ul class="nav-menu">
+            <li class="nav-item" data-panel="wishlist">
+                <span>⭐</span>
+                <span>心愿清单</span>
+                <span class="badge">新</span>
+            </li>
+            <li class="nav-item" data-panel="effects">
+                <span>✨</span>
+                <span>特效设置</span>
+                <span class="badge">新</span>
+            </li>
+            <li class="nav-item" data-panel="sweetwords">
+                <span>💬</span>
+                <span>甜蜜话语</span>
+                <span class="badge">新</span>
+            </li>
+        </ul>
+        
+        <div class="nav-section">系统</div>
+        <ul class="nav-menu">
+            <li class="nav-item" data-panel="footer">
+                <span>📝</span>
+                <span>页脚设置</span>
+            </li>
+            <li class="nav-item" data-panel="backup">
+                <span>💾</span>
+                <span>数据备份</span>
+            </li>
+        </ul>
     </div>
 
     <!-- 主内容区 -->
     <div class="main-content">
         <div class="header">
-            <h2 id="panelTitle">基础设置</h2>
-            <a href="index.html" target="_blank" class="preview-btn">
-                <span>👁️</span>
-                预览网站
-            </a>
+            <h2 id="panelTitle">⚙️ 基础设置</h2>
+            <div class="header-actions">
+                <button class="export-btn" onclick="exportAllData()">📤 导出配置</button>
+                <a href="index.html" target="_blank" class="preview-btn">
+                    <span>👁️</span>
+                    预览网站
+                </a>
+            </div>
         </div>
 
         <!-- 基础设置面板 -->
@@ -1571,6 +1620,60 @@
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
+        // ============ 云端同步（Vercel KV）===========
+        // 注意：此 token 不要写在代码里，必须在 Vercel 项目环境变量里设置 ADMIN_TOKEN。
+        // 在本地预览时也可以在浏览器 localStorage 手动放一个 admin_token 用于测试。
+        function getAdminToken() {
+            // 推荐：你自己在浏览器控制台执行：localStorage.setItem('admin_token','你的token')
+            return localStorage.getItem('admin_token') || '';
+        }
+
+        function buildCloudConfig() {
+            return {
+                basic: JSON.parse(localStorage.getItem('lovesite_basic') || 'null'),
+                password: JSON.parse(localStorage.getItem('lovesite_password') || 'null'),
+                theme: JSON.parse(localStorage.getItem('lovesite_theme') || 'null'),
+                photos: JSON.parse(localStorage.getItem('lovesite_photos') || 'null'),
+                music: JSON.parse(localStorage.getItem('lovesite_music') || 'null'),
+                timeline: JSON.parse(localStorage.getItem('lovesite_timeline') || 'null'),
+                message: JSON.parse(localStorage.getItem('lovesite_message') || 'null'),
+                wishlist: JSON.parse(localStorage.getItem('lovesite_wishlist') || 'null'),
+                effects: JSON.parse(localStorage.getItem('lovesite_effects') || 'null'),
+                sweetwords: JSON.parse(localStorage.getItem('lovesite_sweetwords') || 'null'),
+                footer: JSON.parse(localStorage.getItem('lovesite_footer') || 'null'),
+            };
+        }
+
+        async function syncToCloud() {
+            const token = getAdminToken();
+            if (!token) {
+                // 不阻塞本地保存，但提示用户
+                showToast('未检测到 admin_token：已本地保存，但未同步到云端（跨设备不会生效）', 'error');
+                return;
+            }
+
+            const config = buildCloudConfig();
+            try {
+                const res = await fetch('/api/config/set', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-token': token
+                    },
+                    body: JSON.stringify({ config })
+                });
+
+                if (!res.ok) {
+                    const t = await res.text();
+                    throw new Error(t);
+                }
+
+                showToast('已同步到云端（跨设备可用）');
+            } catch (e) {
+                showToast('云端同步失败：' + (e?.message || e), 'error');
+            }
+        }
+
         // ============ 基础设置 ============
         let typewriterTexts = [
             '时光温柔，记录下我们相遇的每一个瞬间',
@@ -1610,6 +1713,7 @@
             };
             localStorage.setItem('lovesite_basic', JSON.stringify(settings));
             showToast('基础设置保存成功！');
+            syncToCloud();
         }
 
         function loadBasicSettings() {
@@ -1695,6 +1799,7 @@
         function savePhotoSettings() {
             localStorage.setItem('lovesite_photos', JSON.stringify(photos));
             showToast('相册保存成功！');
+            syncToCloud();
         }
 
         function loadPhotoSettings() {
@@ -1718,6 +1823,7 @@
             musicData.url = document.getElementById('musicUrl').value;
             localStorage.setItem('lovesite_music', JSON.stringify(musicData));
             showToast('音乐设置保存成功！');
+            syncToCloud();
         }
 
         function loadMusicSettings() {
@@ -1821,6 +1927,7 @@
         function saveTimelineSettings() {
             localStorage.setItem('lovesite_timeline', JSON.stringify(timelineItems));
             showToast('故事时间轴保存成功！');
+            syncToCloud();
         }
 
         function loadTimelineSettings() {
@@ -1839,6 +1946,7 @@
             };
             localStorage.setItem('lovesite_message', JSON.stringify(settings));
             showToast('心语保存成功！');
+            syncToCloud();
         }
 
         function loadMessageSettings() {
@@ -1865,6 +1973,7 @@
             };
             localStorage.setItem('lovesite_password', JSON.stringify(settings));
             showToast('密码设置保存成功！');
+            syncToCloud();
         }
 
         function loadPasswordSettings() {
@@ -1921,6 +2030,7 @@
             };
             localStorage.setItem('lovesite_theme', JSON.stringify(settings));
             showToast('主题设置保存成功！');
+            syncToCloud();
         }
 
         function loadThemeSettings() {
@@ -1989,6 +2099,7 @@
             };
             localStorage.setItem('lovesite_wishlist', JSON.stringify(settings));
             showToast('心愿清单保存成功！');
+            syncToCloud();
         }
 
         function loadWishlistSettings() {
@@ -2022,6 +2133,7 @@
             };
             localStorage.setItem('lovesite_effects', JSON.stringify(settings));
             showToast('特效设置保存成功！');
+            syncToCloud();
         }
 
         function loadEffectSettings() {
@@ -2082,6 +2194,7 @@
             };
             localStorage.setItem('lovesite_sweetwords', JSON.stringify(settings));
             showToast('甜蜜话语保存成功！');
+            syncToCloud();
         }
 
         function loadSweetwordsSettings() {
@@ -2130,6 +2243,7 @@
             };
             localStorage.setItem('lovesite_footer', JSON.stringify(settings));
             showToast('页脚设置保存成功！');
+            syncToCloud();
         }
 
         function loadFooterSettings() {
@@ -2185,7 +2299,8 @@
                             }
                         });
                         showToast('数据导入成功！即将刷新页面...');
-                        setTimeout(() => location.reload(), 1500);
+                        // 导入后也同步到云端
+                        setTimeout(() => { syncToCloud(); location.reload(); }, 800);
                     } catch (err) {
                         showToast('导入失败：文件格式错误', 'error');
                     }
