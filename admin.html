@@ -1709,6 +1709,7 @@
                 loveDate: document.getElementById('loveDate').value,
                 typewriterTexts: typewriterTexts,
                 siteTitle: document.getElementById('siteTitle').value,
+                // 允许空字符串（不要被 fallback 吃掉）
                 siteSubtitle: document.getElementById('siteSubtitle').value
             };
             localStorage.setItem('lovesite_basic', JSON.stringify(settings));
