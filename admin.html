@@ -953,6 +953,11 @@
         
         <div class="nav-section">创意功能</div>
         <ul class="nav-menu">
+            <li class="nav-item" data-panel="broadcast">
+                <span>📣</span>
+                <span>小小广播站</span>
+                <span class="badge">新</span>
+            </li>
             <li class="nav-item" data-panel="wishlist">
                 <span>⭐</span>
                 <span>心愿清单</span>
@@ -1352,6 +1357,38 @@
             </div>
         </div>
 
+        <!-- 小小广播站面板 -->
+        <div class="panel" id="panel-broadcast">
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">📣</div>
+                    小小广播站（阶段性鼓励/想念/喜悦）
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">只会在首页恋爱计数器下方显示“当前最适合的一条”（按日期命中 + 优先级）</p>
+
+                <div class="form-group">
+                    <div class="toggle-wrapper">
+                        <span>启用广播站</span>
+                        <div class="toggle active" id="broadcastToggle" onclick="toggleBroadcastEnabled()"></div>
+                    </div>
+                </div>
+
+                <div id="broadcastItems"></div>
+
+                <button class="btn btn-secondary" onclick="addBroadcastItem()">
+                    <span>➕</span>
+                    添加一条广播
+                </button>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveBroadcastSettings()">
+                    <span>💾</span>
+                    保存广播
+                </button>
+            </div>
+        </div>
+
         <!-- 心愿清单面板 -->
         <div class="panel" id="panel-wishlist">
             <div class="card">
@@ -1610,6 +1647,7 @@
             'music': '🎵 音乐设置',
             'timeline': '📖 故事时间轴',
             'message': '💌 心语留言',
+            'broadcast': '📣 小小广播站',
             'wishlist': '⭐ 心愿清单',
             'effects': '✨ 特效设置',
             'sweetwords': '💬 甜蜜话语',
@@ -1690,6 +1728,7 @@
                 music: JSON.parse(localStorage.getItem('lovesite_music') || 'null'),
                 timeline: JSON.parse(localStorage.getItem('lovesite_timeline') || 'null'),
                 message: JSON.parse(localStorage.getItem('lovesite_message') || 'null'),
+                broadcast: JSON.parse(localStorage.getItem('lovesite_broadcast') || 'null'),
                 wishlist: JSON.parse(localStorage.getItem('lovesite_wishlist') || 'null'),
                 effects: JSON.parse(localStorage.getItem('lovesite_effects') || 'null'),
                 sweetwords: JSON.parse(localStorage.getItem('lovesite_sweetwords') || 'null'),
@@ -1725,6 +1764,15 @@
             } catch (e) {
                 showToast('云端同步失败：' + (e?.message || e), 'error');
             }
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#39;');
         }
 
         // ============ 基础设置 ============
@@ -2146,6 +2194,153 @@
             showToast('已恢复默认主题');
         }
 
+        // ============ 小小广播站 ============
+        let broadcastEnabled = true;
+        let broadcastItems = [
+            {
+                enabled: true,
+                priority: 10,
+                tag: '期末加油',
+                title: '期末周加油',
+                content: '不管考得怎样，你已经很努力了。\n我一直站在你这边。\n记得按时吃饭、早点睡。',
+                startDate: '',
+                endDate: '',
+                countdownDate: ''
+            },
+            {
+                enabled: true,
+                priority: 8,
+                tag: '快见面啦',
+                title: '快见面啦',
+                content: '今天又离见你近了一点点。\n想到你我就会开心。',
+                startDate: '',
+                endDate: '',
+                countdownDate: ''
+            },
+            {
+                enabled: true,
+                priority: 6,
+                tag: '想你',
+                title: '想你',
+                content: '很想你。\n也很期待我们下次见面。\n抱抱。',
+                startDate: '',
+                endDate: '',
+                countdownDate: ''
+            }
+        ];
+
+        function toggleBroadcastEnabled() {
+            broadcastEnabled = !broadcastEnabled;
+            document.getElementById('broadcastToggle')?.classList.toggle('active', broadcastEnabled);
+        }
+
+        function renderBroadcastItems() {
+            const container = document.getElementById('broadcastItems');
+            if (!container) return;
+
+            container.innerHTML = broadcastItems.map((item, index) => `
+                <div class="timeline-item-edit" style="border-left-color: #64b5f6;">
+                    <div class="item-header">
+                        <span class="item-number">广播 ${index + 1}</span>
+                        <button class="btn btn-danger" onclick="removeBroadcastItem(${index})" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">删除</button>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="toggle-wrapper">
+                            <span>启用这条</span>
+                            <div class="toggle ${item.enabled ? 'active' : ''}" onclick="toggleBroadcastItem(${index})"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>标题</label>
+                            <input type="text" value="${escapeHtml(item.title || '')}" onchange="broadcastItems[${index}].title = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label>标签（可选）</label>
+                            <input type="text" value="${escapeHtml(item.tag || '')}" onchange="broadcastItems[${index}].tag = this.value" placeholder="例如：期末加油">
+                        </div>
+                        <div class="form-group">
+                            <label>优先级（数字越大越优先）</label>
+                            <input type="number" value="${Number.isFinite(item.priority) ? item.priority : 0}" onchange="broadcastItems[${index}].priority = Number(this.value)" min="0" step="1">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>正文（可多行）</label>
+                        <textarea rows="4" onchange="broadcastItems[${index}].content = this.value">${item.content || ''}</textarea>
+                        <p class="form-hint">首页会按原样换行显示</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>开始日期（可不填）</label>
+                            <input type="date" value="${escapeAttr(item.startDate || '')}" onchange="broadcastItems[${index}].startDate = this.value">
+                            <p class="form-hint">不填表示从现在起都可以</p>
+                        </div>
+                        <div class="form-group">
+                            <label>结束日期（可不填）</label>
+                            <input type="date" value="${escapeAttr(item.endDate || '')}" onchange="broadcastItems[${index}].endDate = this.value">
+                            <p class="form-hint">不填表示一直有效</p>
+                        </div>
+                        <div class="form-group">
+                            <label>倒计时目标日期（可选）</label>
+                            <input type="date" value="${escapeAttr(item.countdownDate || '')}" onchange="broadcastItems[${index}].countdownDate = this.value">
+                            <p class="form-hint">例如“见面日期”，首页显示还有多少天</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleBroadcastItem(index) {
+            broadcastItems[index].enabled = !broadcastItems[index].enabled;
+            renderBroadcastItems();
+        }
+
+        function addBroadcastItem() {
+            broadcastItems.push({
+                enabled: true,
+                priority: 5,
+                tag: '',
+                title: '新的广播',
+                content: '写下想对她说的话…',
+                startDate: '',
+                endDate: '',
+                countdownDate: ''
+            });
+            renderBroadcastItems();
+        }
+
+        function removeBroadcastItem(index) {
+            if (confirm('确定删除这条广播吗？')) {
+                broadcastItems.splice(index, 1);
+                renderBroadcastItems();
+            }
+        }
+
+        function saveBroadcastSettings() {
+            const settings = {
+                enabled: broadcastEnabled,
+                items: broadcastItems
+            };
+            localStorage.setItem('lovesite_broadcast', JSON.stringify(settings));
+            showToast('广播保存成功！');
+            syncToCloud();
+        }
+
+        function loadBroadcastSettings() {
+            const saved = localStorage.getItem('lovesite_broadcast');
+            if (saved) {
+                const s = JSON.parse(saved);
+                broadcastEnabled = s.enabled !== false;
+                broadcastItems = Array.isArray(s.items) ? s.items : broadcastItems;
+            }
+            document.getElementById('broadcastToggle')?.classList.toggle('active', broadcastEnabled);
+            renderBroadcastItems();
+        }
+
         // ============ 心愿清单 ============
         let wishlistEnabled = true;
         let wishItems = [
@@ -2428,6 +2623,7 @@
             loadMusicSettings();
             loadTimelineSettings();
             loadMessageSettings();
+            loadBroadcastSettings();
             loadWishlistSettings();
             loadEffectSettings();
             loadSweetwordsSettings();
