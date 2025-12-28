@@ -33,13 +33,14 @@ export default async function handler(req, res) {
 
     const key = 'lovesite:config';
 
+    // Upstash REST /set expects JSON string as value; we store as string to keep compatibility
     const kvRes = await fetch(`${kvUrl}/set/${encodeURIComponent(key)}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${kvToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(config),
+      body: JSON.stringify(JSON.stringify(config)),
     });
 
     if (!kvRes.ok) {
