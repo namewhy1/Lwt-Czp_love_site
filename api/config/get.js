@@ -21,16 +21,25 @@ export default async function handler(req, res) {
     }
 
     const data = await kvRes.json();
-    // Upstash REST returns: { result: <value|null> }
-    let config = data?.result ?? null;
 
-    // 兼容：如果历史版本把 JSON 当字符串存了，这里自动解析
-    if (typeof config === 'string') {
+    // Upstash REST returns: { result: <value|null> }
+    let raw = data?.result ?? null;
+
+    // Standardize: always return object or null
+    let config = null;
+    if (raw == null) {
+      config = null;
+    } else if (typeof raw === 'object') {
+      config = raw;
+    } else if (typeof raw === 'string') {
       try {
-        config = JSON.parse(config);
-      } catch (_) {
-        // keep as string
+        config = JSON.parse(raw);
+      } catch (e) {
+        // If it's not valid JSON, treat as no config
+        config = null;
       }
+    } else {
+      config = null;
     }
 
     res.setHeader('Cache-Control', 'no-store');
@@ -39,4 +48,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Unexpected error', detail: String(e) });
   }
 }
-
