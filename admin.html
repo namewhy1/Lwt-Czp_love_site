@@ -996,6 +996,26 @@
             </div>
         </div>
 
+        <!-- 管理员口令（无需控制台） -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <h3 class="card-title">
+                <div class="icon">🔑</div>
+                管理员口令
+            </h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>口令（只保存在本设备，不会显示给别人）</label>
+                    <input type="password" id="adminTokenInput" placeholder="请输入管理员口令">
+                    <p class="form-hint">用于把修改同步到云端（跨设备生效）。你只需要输入一次。</p>
+                </div>
+                <div class="form-group" style="display:flex; align-items:flex-end; gap: 0.8rem;">
+                    <button class="btn btn-primary" onclick="saveAdminToken()" style="height: 45px;">保存口令</button>
+                    <button class="btn btn-secondary" onclick="clearAdminToken()" style="height: 45px;">清除</button>
+                </div>
+            </div>
+            <p class="form-hint" id="adminTokenStatus">状态：未设置</p>
+        </div>
+
         <!-- 基础设置面板 -->
         <div class="panel active" id="panel-basic">
             <div class="card">
@@ -1624,8 +1644,41 @@
         // 注意：此 token 不要写在代码里，必须在 Vercel 项目环境变量里设置 ADMIN_TOKEN。
         // 在本地预览时也可以在浏览器 localStorage 手动放一个 admin_token 用于测试。
         function getAdminToken() {
-            // 推荐：你自己在浏览器控制台执行：localStorage.setItem('admin_token','你的token')
             return localStorage.getItem('admin_token') || '';
+        }
+
+        function updateAdminTokenStatus() {
+            const statusEl = document.getElementById('adminTokenStatus');
+            const inputEl = document.getElementById('adminTokenInput');
+            const token = getAdminToken();
+            if (statusEl) {
+                statusEl.textContent = token ? '状态：已设置（可同步云端）' : '状态：未设置（只能本地保存）';
+                statusEl.style.color = token ? '#7fb77e' : '#e57373';
+            }
+            if (inputEl) {
+                // 不回显完整口令，避免旁人看到
+                inputEl.value = token ? '••••••••' : '';
+            }
+        }
+
+        function saveAdminToken() {
+            const inputEl = document.getElementById('adminTokenInput');
+            if (!inputEl) return;
+
+            const v = inputEl.value.trim();
+            if (!v || v === '••••••••') {
+                showToast('请输入正确的管理员口令', 'error');
+                return;
+            }
+            localStorage.setItem('admin_token', v);
+            showToast('口令已保存，本设备可直接同步云端');
+            updateAdminTokenStatus();
+        }
+
+        function clearAdminToken() {
+            localStorage.removeItem('admin_token');
+            showToast('已清除口令，本设备将无法同步云端');
+            updateAdminTokenStatus();
         }
 
         function buildCloudConfig() {
@@ -1774,20 +1827,60 @@
             }
         }
 
-        function uploadLocalPhotos(input) {
+        async function uploadLocalPhotos(input) {
             const files = input.files;
+            if (!files || files.length === 0) return;
+
+            const token = getAdminToken();
+            if (!token) {
+                showToast('请先在顶部设置“管理员口令”，否则无法上传到云端', 'error');
+                input.value = '';
+                return;
+            }
+
             for (let file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
+                try {
+                    // 读成 dataURL（只用于上传，不会存进配置）
+                    const dataUrl = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+
+                    // 上传到 Vercel Blob
+                    const res = await fetch('/api/upload/image', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-admin-token': token
+                        },
+                        body: JSON.stringify({
+                            filename: file.name,
+                            contentType: file.type,
+                            dataUrl
+                        })
+                    });
+
+                    if (!res.ok) {
+                        const t = await res.text();
+                        throw new Error(t);
+                    }
+
+                    const out = await res.json();
                     photos.push({
-                        url: e.target.result,
+                        url: out.url,
                         caption: file.name.replace(/\.[^/.]+$/, '')
                     });
+
                     renderPhotos();
-                };
-                reader.readAsDataURL(file);
+                } catch (e) {
+                    showToast('上传失败：' + (e?.message || e), 'error');
+                }
             }
+
             input.value = '';
+            showToast('图片已上传到云端，请点击“保存相册”同步配置');
         }
 
         function removePhoto(index) {
@@ -2327,6 +2420,7 @@
 
         // ============ 初始化 ============
         document.addEventListener('DOMContentLoaded', () => {
+            updateAdminTokenStatus();
             loadBasicSettings();
             loadPasswordSettings();
             loadThemeSettings();
