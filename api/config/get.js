@@ -22,9 +22,17 @@ export default async function handler(req, res) {
 
     const data = await kvRes.json();
     // Upstash REST returns: { result: <value|null> }
-    const config = data?.result || null;
+    let config = data?.result ?? null;
 
-    // Cache-busting + allow client caching if you want (here: no-cache)
+    // 兼容：如果历史版本把 JSON 当字符串存了，这里自动解析
+    if (typeof config === 'string') {
+      try {
+        config = JSON.parse(config);
+      } catch (_) {
+        // keep as string
+      }
+    }
+
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({ config });
   } catch (e) {
