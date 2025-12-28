@@ -2297,9 +2297,9 @@
         }
 
         // ============ 网站初始化 ============
-        function initializeSite() {
-            // 从管理后台读取配置
-            loadAdminSettings();
+        async function initializeSite() {
+            // 从管理后台/云端读取配置
+            await loadAdminSettings();
             
             // 应用设置
             applySettings();
@@ -2401,7 +2401,22 @@
             }
         };
         
-        function loadAdminSettings() {
+        async function loadAdminSettings() {
+            // 1) 优先从云端拉取（跨设备同步）
+            try {
+                const res = await fetch('/api/config/get', { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.config) {
+                        applyCloudConfigToLocal(data.config);
+                        return;
+                    }
+                }
+            } catch (e) {
+                // 云端不可用时回落到本地
+            }
+
+            // 2) 回落到本地 localStorage（离线/首次）
             try {
                 const basicSettings = localStorage.getItem('lovesite_basic');
                 if (basicSettings) {
@@ -2468,6 +2483,74 @@
                 console.log('加载设置失败，使用默认配置');
             }
         }
+
+        function applyCloudConfigToLocal(cloud) {
+            // cloud 格式：{ basic, photos, music, timeline, message, password, theme, wishlist, effects, sweetwords, footer }
+            try {
+                if (cloud.basic) {
+                    const basic = cloud.basic;
+                    if (basic.loveDate) CONFIG.loveDate = basic.loveDate;
+                    if (basic.typewriterTexts) CONFIG.typewriterTexts = basic.typewriterTexts;
+                    if (basic.siteTitle) CONFIG.siteTitle = basic.siteTitle;
+                    if (basic.siteSubtitle) CONFIG.siteSubtitle = basic.siteSubtitle;
+
+                    // 同步到本地缓存
+                    localStorage.setItem('lovesite_basic', JSON.stringify(basic));
+                }
+
+                if (cloud.photos) {
+                    CONFIG.photos = cloud.photos;
+                    localStorage.setItem('lovesite_photos', JSON.stringify(cloud.photos));
+                }
+
+                if (cloud.music) {
+                    CONFIG.music = { ...CONFIG.music, ...cloud.music };
+                    localStorage.setItem('lovesite_music', JSON.stringify(cloud.music));
+                }
+
+                if (cloud.timeline) {
+                    CONFIG.timeline = cloud.timeline;
+                    localStorage.setItem('lovesite_timeline', JSON.stringify(cloud.timeline));
+                }
+
+                if (cloud.message) {
+                    CONFIG.message = cloud.message;
+                    localStorage.setItem('lovesite_message', JSON.stringify(cloud.message));
+                }
+
+                if (cloud.password) {
+                    localStorage.setItem('lovesite_password', JSON.stringify(cloud.password));
+                }
+
+                if (cloud.theme) {
+                    CONFIG.theme = cloud.theme;
+                    localStorage.setItem('lovesite_theme', JSON.stringify(cloud.theme));
+                }
+
+                if (cloud.wishlist) {
+                    CONFIG.wishlist = cloud.wishlist;
+                    localStorage.setItem('lovesite_wishlist', JSON.stringify(cloud.wishlist));
+                }
+
+                if (cloud.effects) {
+                    CONFIG.effects = cloud.effects;
+                    localStorage.setItem('lovesite_effects', JSON.stringify(cloud.effects));
+                }
+
+                if (cloud.sweetwords) {
+                    CONFIG.sweetwords = cloud.sweetwords;
+                    localStorage.setItem('lovesite_sweetwords', JSON.stringify(cloud.sweetwords));
+                }
+
+                if (cloud.footer) {
+                    CONFIG.footer = cloud.footer;
+                    localStorage.setItem('lovesite_footer', JSON.stringify(cloud.footer));
+                }
+            } catch (e) {
+                console.log('应用云端配置失败');
+            }
+        }
+
         
         function applySettings() {
             // 应用标题
