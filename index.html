@@ -1639,6 +1639,60 @@
             display: block;
         }
 
+        /* ============ 小小广播站（首页） ============ */
+        .broadcast-card {
+            margin-top: 2.5rem;
+            padding: 1.8rem 2rem;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(232, 164, 184, 0.22);
+            border: 1px solid rgba(232, 164, 184, 0.25);
+            max-width: 520px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .broadcast-tag {
+            display: inline-block;
+            padding: 0.25rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(232, 164, 184, 0.18);
+            color: var(--deep-rose);
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .broadcast-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 0.6rem;
+        }
+
+        .broadcast-content {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 1.9;
+            white-space: pre-line;
+        }
+
+        .broadcast-countdown {
+            margin-top: 1rem;
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 2px;
+            color: var(--primary-pink);
+            font-size: 0.95rem;
+        }
+
+        .broadcast-countdown span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
         /* ============ 心愿清单区域 ============ */
         .wishlist-section {
             padding: 6rem 0;
@@ -1989,6 +2043,14 @@
             
             <div class="scroll-indicator">
                 <span></span>
+            </div>
+
+            <!-- 小小广播站（阶段性鼓励/想念/喜悦） -->
+            <div class="broadcast-card" id="broadcastCard" style="display:none;">
+                <div class="broadcast-tag" id="broadcastTag" style="display:none;">期末加油</div>
+                <div class="broadcast-title" id="broadcastTitle">期末周加油</div>
+                <div class="broadcast-content" id="broadcastContent">你已经很努力了，我一直在你身边。</div>
+                <div class="broadcast-countdown" id="broadcastCountdown" style="display:none;">距离见面还有 <span id="broadcastDays">0</span> 天</div>
             </div>
         </section>
 
@@ -2414,6 +2476,21 @@
             footer: {
                 text: 'Made with ♥',
                 date: 'February 2025'
+            },
+            broadcast: {
+                enabled: true,
+                items: [
+                    {
+                        enabled: true,
+                        priority: 10,
+                        tag: '期末加油',
+                        title: '期末周加油',
+                        content: '不管考得怎样，你已经很努力了。\n我一直站在你这边。\n记得按时吃饭、早点睡。',
+                        startDate: '',
+                        endDate: '',
+                        countdownDate: ''
+                    }
+                ]
             }
         };
         
@@ -2497,6 +2574,12 @@
                 if (footerSettings) {
                     CONFIG.footer = JSON.parse(footerSettings);
                 }
+
+                // 加载广播站
+                const broadcastSettings = localStorage.getItem('lovesite_broadcast');
+                if (broadcastSettings) {
+                    CONFIG.broadcast = JSON.parse(broadcastSettings);
+                }
             } catch (e) {
                 console.log('加载设置失败，使用默认配置');
             }
@@ -2564,6 +2647,11 @@
                     CONFIG.footer = cloud.footer;
                     localStorage.setItem('lovesite_footer', JSON.stringify(cloud.footer));
                 }
+
+                if (cloud.broadcast) {
+                    CONFIG.broadcast = cloud.broadcast;
+                    localStorage.setItem('lovesite_broadcast', JSON.stringify(cloud.broadcast));
+                }
             } catch (e) {
                 console.log('应用云端配置失败');
             }
@@ -2613,6 +2701,9 @@
             // 应用相册/时间轴（完全由后台控制数量）
             renderPhotosFromConfig();
             renderTimelineFromConfig();
+
+            // 应用小小广播站（只显示当前最适合的一条）
+            renderBroadcastFromConfig();
 
             // 应用心愿清单
             if (CONFIG.wishlist && CONFIG.wishlist.enabled) {
@@ -2719,6 +2810,71 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        function renderBroadcastFromConfig() {
+            const card = document.getElementById('broadcastCard');
+            if (!card) return;
+
+            const cfg = CONFIG.broadcast;
+            if (!cfg || cfg.enabled === false || !Array.isArray(cfg.items) || cfg.items.length === 0) {
+                card.style.display = 'none';
+                return;
+            }
+
+            const today = new Date();
+            const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+            const candidates = cfg.items
+                .filter(i => i && i.enabled !== false)
+                .filter(i => {
+                    const s = i.startDate ? new Date(i.startDate) : null;
+                    const e = i.endDate ? new Date(i.endDate) : null;
+                    const sd = s ? new Date(s.getFullYear(), s.getMonth(), s.getDate()) : null;
+                    const ed = e ? new Date(e.getFullYear(), e.getMonth(), e.getDate()) : null;
+
+                    if (sd && todayDate < sd) return false;
+                    if (ed && todayDate > ed) return false;
+                    return true;
+                })
+                .sort((a, b) => (Number(b.priority || 0) - Number(a.priority || 0)));
+
+            const chosen = candidates[0];
+            if (!chosen) {
+                card.style.display = 'none';
+                return;
+            }
+
+            // 填充
+            const tagEl = document.getElementById('broadcastTag');
+            const titleEl = document.getElementById('broadcastTitle');
+            const contentEl = document.getElementById('broadcastContent');
+            const countdownEl = document.getElementById('broadcastCountdown');
+            const daysEl = document.getElementById('broadcastDays');
+
+            if (tagEl) {
+                const tag = (chosen.tag || '').trim();
+                tagEl.style.display = tag ? 'inline-block' : 'none';
+                tagEl.textContent = tag;
+            }
+            if (titleEl) titleEl.textContent = chosen.title || '';
+            if (contentEl) contentEl.textContent = chosen.content || '';
+
+            // 倒计时（可选）
+            if (countdownEl && daysEl) {
+                const cd = chosen.countdownDate ? new Date(chosen.countdownDate) : null;
+                if (cd && !isNaN(cd.getTime())) {
+                    const cdd = new Date(cd.getFullYear(), cd.getMonth(), cd.getDate());
+                    const diff = cdd - todayDate;
+                    const days = Math.round(diff / (1000 * 60 * 60 * 24));
+                    countdownEl.style.display = 'block';
+                    daysEl.textContent = String(days);
+                } else {
+                    countdownEl.style.display = 'none';
+                }
+            }
+
+            card.style.display = 'block';
         }
         
         // ============ 心愿清单 ============
