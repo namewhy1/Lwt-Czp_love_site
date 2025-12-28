@@ -19,6 +19,8 @@
             --border: #e8ddd5;
             --success: #7fb77e;
             --danger: #e57373;
+            --warning: #ffb74d;
+            --info: #64b5f6;
             --shadow: rgba(0, 0, 0, 0.08);
         }
 
@@ -40,24 +42,28 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 250px;
+            width: 260px;
             height: 100vh;
-            background: var(--card-bg);
+            background: linear-gradient(180deg, var(--card-bg) 0%, #fff9fb 100%);
             border-right: 1px solid var(--border);
-            padding: 2rem 0;
+            padding: 1.5rem 0;
             z-index: 100;
+            overflow-y: auto;
         }
 
         .logo {
-            padding: 0 1.5rem 2rem;
+            padding: 0 1.5rem 1.5rem;
             border-bottom: 1px solid var(--border);
             margin-bottom: 1rem;
         }
 
         .logo h1 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--primary);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .logo p {
@@ -66,18 +72,28 @@
             margin-top: 0.3rem;
         }
 
+        .nav-section {
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
         .nav-menu {
             list-style: none;
         }
 
         .nav-item {
-            padding: 0.8rem 1.5rem;
+            padding: 0.7rem 1.5rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 0.8rem;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
+            font-size: 0.9rem;
         }
 
         .nav-item:hover {
@@ -90,15 +106,18 @@
             color: var(--primary-dark);
         }
 
-        .nav-item i {
-            font-size: 1.1rem;
-            width: 24px;
-            text-align: center;
+        .nav-item .badge {
+            margin-left: auto;
+            padding: 0.15rem 0.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.65rem;
         }
 
         /* 主内容区 */
         .main-content {
-            margin-left: 250px;
+            margin-left: 260px;
             padding: 2rem;
             min-height: 100vh;
         }
@@ -115,6 +134,14 @@
         .header h2 {
             font-size: 1.5rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.8rem;
         }
 
         .preview-btn {
@@ -137,9 +164,30 @@
             box-shadow: 0 5px 20px rgba(232, 164, 184, 0.4);
         }
 
+        .export-btn {
+            padding: 0.6rem 1rem;
+            background: var(--info);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+        }
+
         /* 内容面板 */
         .panel {
             display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .panel.active {
@@ -148,10 +196,15 @@
 
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 10px var(--shadow);
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
 
         .card-title {
@@ -165,13 +218,26 @@
             gap: 0.5rem;
         }
 
-        .card-title i {
-            color: var(--primary);
+        .card-title .icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
         }
 
         /* 表单样式 */
         .form-group {
             margin-bottom: 1.2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
         }
 
         .form-group label {
@@ -185,6 +251,10 @@
         .form-group input[type="text"],
         .form-group input[type="date"],
         .form-group input[type="url"],
+        .form-group input[type="password"],
+        .form-group input[type="color"],
+        .form-group input[type="number"],
+        .form-group select,
         .form-group textarea {
             width: 100%;
             padding: 0.8rem 1rem;
@@ -192,14 +262,16 @@
             border-radius: 8px;
             font-size: 0.9rem;
             font-family: inherit;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
             background: var(--bg);
         }
 
         .form-group input:focus,
+        .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(232, 164, 184, 0.2);
         }
 
         .form-group textarea {
@@ -207,10 +279,78 @@
             resize: vertical;
         }
 
+        .form-group input[type="color"] {
+            height: 45px;
+            padding: 0.3rem;
+            cursor: pointer;
+        }
+
         .form-hint {
             font-size: 0.75rem;
             color: var(--text-light);
             margin-top: 0.3rem;
+        }
+
+        .form-group .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--border);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle.active {
+            background: var(--success);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: left 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle.active::after {
+            left: 27px;
+        }
+
+        /* 颜色选择器组 */
+        .color-picker-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .color-picker-item {
+            text-align: center;
+        }
+
+        .color-picker-item label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-picker-item input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
         }
 
         /* 图片列表 */
@@ -223,11 +363,17 @@
 
         .image-item {
             position: relative;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
             aspect-ratio: 4/3;
             background: var(--bg);
-            border: 2px dashed var(--border);
+            border: 2px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .image-item img {
@@ -265,7 +411,7 @@
             left: 0;
             right: 0;
             padding: 0.5rem;
-            background: rgba(0, 0, 0, 0.6);
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
         }
 
         .image-item .caption-input input {
@@ -274,7 +420,7 @@
             border: none;
             border-radius: 4px;
             font-size: 0.8rem;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .add-image-btn {
@@ -285,25 +431,24 @@
             cursor: pointer;
             color: var(--text-light);
             transition: all 0.3s ease;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
         }
 
         .add-image-btn:hover {
             border-color: var(--primary);
             color: var(--primary);
-        }
-
-        .add-image-btn i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            background: rgba(232, 164, 184, 0.1);
         }
 
         /* 时间轴编辑 */
         .timeline-item-edit {
-            background: var(--bg);
-            border-radius: 8px;
-            padding: 1rem;
+            background: linear-gradient(135deg, var(--bg), #fff);
+            border-radius: 12px;
+            padding: 1.2rem;
             margin-bottom: 1rem;
             position: relative;
+            border-left: 4px solid var(--primary);
         }
 
         .timeline-item-edit .item-header {
@@ -316,6 +461,10 @@
         .timeline-item-edit .item-number {
             font-weight: 600;
             color: var(--primary);
+            background: rgba(232, 164, 184, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
         }
 
         /* 打字机文字列表 */
@@ -336,6 +485,103 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .text-list-item .remove-text-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* 心愿清单样式 */
+        .wish-item {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            padding: 0.8rem;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 0.6rem;
+            transition: all 0.3s ease;
+        }
+
+        .wish-item:hover {
+            background: rgba(232, 164, 184, 0.15);
+        }
+
+        .wish-item .wish-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .wish-item .wish-checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .wish-item .wish-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .wish-item input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            padding: 0.3rem;
+        }
+
+        .wish-item input:focus {
+            outline: none;
+            background: white;
+            border-radius: 4px;
+        }
+
+        /* 预设主题选择 */
+        .theme-presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .theme-preset {
+            padding: 0.8rem;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-preset:hover {
+            border-color: var(--primary);
+        }
+
+        .theme-preset.active {
+            border-color: var(--primary);
+            background: rgba(232, 164, 184, 0.1);
+        }
+
+        .theme-preset .color-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 auto 0.5rem;
+        }
+
+        .theme-preset span {
+            font-size: 0.75rem;
+            color: var(--text);
         }
 
         /* 按钮样式 */
@@ -359,6 +605,7 @@
 
         .btn-primary:hover {
             box-shadow: 0 5px 15px rgba(232, 164, 184, 0.4);
+            transform: translateY(-2px);
         }
 
         .btn-secondary {
@@ -381,10 +628,16 @@
             color: white;
         }
 
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
         .btn-group {
             display: flex;
             gap: 0.8rem;
             margin-top: 1.5rem;
+            flex-wrap: wrap;
         }
 
         /* 提示消息 */
@@ -395,17 +648,66 @@
             padding: 1rem 1.5rem;
             background: var(--success);
             color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transform: translateY(100px);
             opacity: 0;
             transition: all 0.3s ease;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .toast.show {
             transform: translateY(0);
             opacity: 1;
+        }
+
+        /* 特效开关卡片 */
+        .effect-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 10px;
+            margin-bottom: 0.8rem;
+        }
+
+        .effect-toggle .effect-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .effect-toggle .effect-icon {
+            font-size: 1.5rem;
+        }
+
+        .effect-toggle .effect-name {
+            font-weight: 500;
+        }
+
+        .effect-toggle .effect-desc {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* 甜蜜话语列表 */
+        .sweet-message-item {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+            align-items: center;
+        }
+
+        .sweet-message-item input {
+            flex: 1;
+        }
+
+        .sweet-message-item .freq-select {
+            width: 100px;
         }
 
         /* 移动端适配 */
@@ -415,6 +717,10 @@
                 height: auto;
                 position: relative;
                 padding: 1rem;
+            }
+
+            .nav-section {
+                display: none;
             }
 
             .nav-menu {
@@ -436,6 +742,10 @@
                 color: white;
             }
 
+            .nav-item .badge {
+                display: none;
+            }
+
             .main-content {
                 margin-left: 0;
                 padding: 1rem;
@@ -450,12 +760,20 @@
                 gap: 1rem;
                 align-items: flex-start;
             }
+
+            .header-actions {
+                width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* 文件上传区域 */
         .file-upload-area {
             border: 2px dashed var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 2rem;
             text-align: center;
             cursor: pointer;
@@ -468,9 +786,8 @@
             background: rgba(232, 164, 184, 0.1);
         }
 
-        .file-upload-area i {
+        .file-upload-area .upload-icon {
             font-size: 2.5rem;
-            color: var(--primary);
             margin-bottom: 0.8rem;
         }
 
@@ -488,14 +805,14 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem;
-            background: var(--bg);
-            border-radius: 8px;
+            background: linear-gradient(135deg, var(--bg), #fff);
+            border-radius: 12px;
             margin-top: 1rem;
+            border: 1px solid var(--border);
         }
 
-        .current-music i {
-            font-size: 2rem;
-            color: var(--primary);
+        .current-music .music-icon {
+            font-size: 2.5rem;
         }
 
         .current-music-info {
@@ -509,6 +826,83 @@
         .current-music-info .size {
             font-size: 0.8rem;
             color: var(--text-light);
+        }
+
+        /* 拖拽排序提示 */
+        .drag-hint {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 预览模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-card .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -547,7 +941,7 @@
     <div class="main-content">
         <div class="header">
             <h2 id="panelTitle">基础设置</h2>
-            <a href="czp.html" target="_blank" class="preview-btn">
+            <a href="index.html" target="_blank" class="preview-btn">
                 <span>👁️</span>
                 预览网站
             </a>
@@ -717,7 +1111,7 @@
         <div class="panel" id="panel-message">
             <div class="card">
                 <h3 class="card-title">
-                    <span>💌</span>
+                    <div class="icon">💌</div>
                     心语内容
                 </h3>
                 
@@ -740,10 +1134,398 @@
                 </button>
             </div>
         </div>
+
+        <!-- 密码设置面板 -->
+        <div class="panel" id="panel-password">
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">🔐</div>
+                    访问密码
+                </h3>
+                
+                <div class="form-group">
+                    <label>网站访问密码</label>
+                    <input type="text" id="sitePassword" placeholder="20251224">
+                    <p class="form-hint">设置一个只有你们知道的密码，如纪念日日期</p>
+                </div>
+                
+                <div class="form-group">
+                    <label>密码提示语</label>
+                    <input type="text" id="passwordHint" placeholder="💡 提示：一个特别的日子">
+                    <p class="form-hint">帮助访问者记住密码的提示</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">📝</div>
+                    密码页面文案
+                </h3>
+                
+                <div class="form-group">
+                    <label>页面标题</label>
+                    <input type="text" id="passwordTitle" placeholder="这是我们的秘密小站">
+                </div>
+                
+                <div class="form-group">
+                    <label>页面副标题</label>
+                    <input type="text" id="passwordSubtitle" placeholder="请输入密码进入">
+                </div>
+                
+                <div class="form-group">
+                    <label>按钮文字</label>
+                    <input type="text" id="passwordBtnText" placeholder="进入我们的世界 💕">
+                </div>
+                
+                <div class="form-group">
+                    <label>错误提示</label>
+                    <input type="text" id="passwordErrorText" placeholder="密码不正确，再想想哦～">
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="savePasswordSettings()">
+                    <span>💾</span>
+                    保存密码设置
+                </button>
+            </div>
+        </div>
+
+        <!-- 主题样式面板 -->
+        <div class="panel" id="panel-theme">
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">🎨</div>
+                    预设主题
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">选择一个预设主题，或自定义颜色</p>
+                
+                <div class="theme-presets">
+                    <div class="theme-preset active" onclick="applyTheme('pink')">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #e8a4b8, #f5d0d8);"></div>
+                        <span>樱花粉</span>
+                    </div>
+                    <div class="theme-preset" onclick="applyTheme('purple')">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #b8a4e8, #d0d0f5);"></div>
+                        <span>薰衣草紫</span>
+                    </div>
+                    <div class="theme-preset" onclick="applyTheme('blue')">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #a4c8e8, #d0e8f5);"></div>
+                        <span>天空蓝</span>
+                    </div>
+                    <div class="theme-preset" onclick="applyTheme('gold')">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #e8c8a4, #f5e8d0);"></div>
+                        <span>香槟金</span>
+                    </div>
+                    <div class="theme-preset" onclick="applyTheme('mint')">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #a4e8c8, #d0f5e8);"></div>
+                        <span>薄荷绿</span>
+                    </div>
+                    <div class="theme-preset" onclick="applyTheme('coral')">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #e8a4a4, #f5d0d0);"></div>
+                        <span>珊瑚红</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">🖌️</div>
+                    自定义颜色
+                </h3>
+                
+                <div class="color-picker-group">
+                    <div class="color-picker-item">
+                        <label>主色调</label>
+                        <input type="color" id="primaryColor" value="#e8a4b8">
+                    </div>
+                    <div class="color-picker-item">
+                        <label>次色调</label>
+                        <input type="color" id="secondaryColor" value="#f5d0d8">
+                    </div>
+                    <div class="color-picker-item">
+                        <label>背景色</label>
+                        <input type="color" id="bgColor" value="#faf6f2">
+                    </div>
+                    <div class="color-picker-item">
+                        <label>文字色</label>
+                        <input type="color" id="textColor" value="#4a3f44">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">🔤</div>
+                    字体设置
+                </h3>
+                
+                <div class="form-group">
+                    <label>标题字体</label>
+                    <select id="titleFont">
+                        <option value="Ma Shan Zheng">马上正楷（默认）</option>
+                        <option value="ZCOOL XiaoWei">站酷小薇</option>
+                        <option value="Noto Serif SC">思源宋体</option>
+                        <option value="ZCOOL QingKe HuangYou">站酷庆科黄油体</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveThemeSettings()">
+                    <span>💾</span>
+                    保存主题
+                </button>
+                <button class="btn btn-secondary" onclick="resetTheme()">
+                    <span>🔄</span>
+                    恢复默认
+                </button>
+            </div>
+        </div>
+
+        <!-- 心愿清单面板 -->
+        <div class="panel" id="panel-wishlist">
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">⭐</div>
+                    恋爱心愿清单
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">记录你们想一起完成的事情，完成后可以打勾</p>
+                
+                <div class="form-group">
+                    <div class="toggle-wrapper">
+                        <span>在首页显示心愿清单</span>
+                        <div class="toggle active" id="wishlistToggle" onclick="toggleWishlist()"></div>
+                    </div>
+                </div>
+                
+                <div id="wishlistItems">
+                    <!-- 心愿项目会动态渲染 -->
+                </div>
+                
+                <button class="btn btn-secondary" onclick="addWishItem()">
+                    <span>➕</span>
+                    添加心愿
+                </button>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveWishlistSettings()">
+                    <span>💾</span>
+                    保存心愿清单
+                </button>
+            </div>
+        </div>
+
+        <!-- 特效设置面板 -->
+        <div class="panel" id="panel-effects">
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">✨</div>
+                    动态特效
+                </h3>
+                
+                <div class="effect-toggle">
+                    <div class="effect-info">
+                        <span class="effect-icon">🌸</span>
+                        <div>
+                            <div class="effect-name">飘落花瓣</div>
+                            <div class="effect-desc">浪漫的樱花花瓣飘落效果</div>
+                        </div>
+                    </div>
+                    <div class="toggle active" id="petalToggle" onclick="toggleEffect('petal')"></div>
+                </div>
+                
+                <div class="effect-toggle">
+                    <div class="effect-info">
+                        <span class="effect-icon">✦</span>
+                        <div>
+                            <div class="effect-name">鼠标星光</div>
+                            <div class="effect-desc">鼠标移动时产生闪烁星光</div>
+                        </div>
+                    </div>
+                    <div class="toggle active" id="sparkleToggle" onclick="toggleEffect('sparkle')"></div>
+                </div>
+                
+                <div class="effect-toggle">
+                    <div class="effect-info">
+                        <span class="effect-icon">💕</span>
+                        <div>
+                            <div class="effect-name">浮动爱心</div>
+                            <div class="effect-desc">背景漂浮的爱心装饰</div>
+                        </div>
+                    </div>
+                    <div class="toggle active" id="heartToggle" onclick="toggleEffect('heart')"></div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">🎆</div>
+                    纪念日特效
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">在特定日期自动触发烟花特效</p>
+                
+                <div class="form-group">
+                    <div class="toggle-wrapper">
+                        <span>启用纪念日烟花</span>
+                        <div class="toggle active" id="fireworkToggle" onclick="toggleEffect('firework')"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>触发日期（每年自动触发）</label>
+                    <input type="text" id="fireworkDates" placeholder="12-24, 02-14, 05-20">
+                    <p class="form-hint">多个日期用逗号分隔，格式：月-日</p>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveEffectSettings()">
+                    <span>💾</span>
+                    保存特效设置
+                </button>
+            </div>
+        </div>
+
+        <!-- 甜蜜话语面板 -->
+        <div class="panel" id="panel-sweetwords">
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">💬</div>
+                    随机甜蜜话语
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">访问网站时会随机弹出一条甜蜜话语</p>
+                
+                <div class="form-group">
+                    <div class="toggle-wrapper">
+                        <span>启用甜蜜话语弹窗</span>
+                        <div class="toggle active" id="sweetwordsToggle" onclick="toggleSweetwords()"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>弹出频率</label>
+                    <select id="sweetwordsFreq">
+                        <option value="always">每次访问</option>
+                        <option value="daily">每天一次</option>
+                        <option value="random">随机（30%概率）</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>甜蜜话语列表</label>
+                    <div id="sweetwordsList">
+                        <!-- 动态渲染 -->
+                    </div>
+                    <button class="btn btn-secondary" onclick="addSweetWord()">
+                        <span>➕</span>
+                        添加话语
+                    </button>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveSweetwordsSettings()">
+                    <span>💾</span>
+                    保存甜蜜话语
+                </button>
+            </div>
+        </div>
+
+        <!-- 页脚设置面板 -->
+        <div class="panel" id="panel-footer">
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">📝</div>
+                    页脚内容
+                </h3>
+                
+                <div class="form-group">
+                    <label>页脚文字</label>
+                    <input type="text" id="footerText" placeholder="Made with ♥">
+                </div>
+                
+                <div class="form-group">
+                    <label>日期文字</label>
+                    <input type="text" id="footerDate" placeholder="February 2025">
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">🔗</div>
+                    导航菜单
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">自定义导航栏显示的菜单项</p>
+                
+                <div id="navItems">
+                    <!-- 动态渲染 -->
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveFooterSettings()">
+                    <span>💾</span>
+                    保存页脚设置
+                </button>
+            </div>
+        </div>
+
+        <!-- 数据备份面板 -->
+        <div class="panel" id="panel-backup">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="photoCount">0</div>
+                    <div class="stat-label">张照片</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #64b5f6, #42a5f5);">
+                    <div class="stat-number" id="storyCount">0</div>
+                    <div class="stat-label">个故事</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #81c784, #66bb6a);">
+                    <div class="stat-number" id="wishCount">0</div>
+                    <div class="stat-label">个心愿</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">💾</div>
+                    数据管理
+                </h3>
+                
+                <div class="btn-group" style="margin-top: 0;">
+                    <button class="btn btn-primary" onclick="exportAllData()">
+                        <span>📤</span>
+                        导出所有数据
+                    </button>
+                    <label class="btn btn-secondary" style="cursor: pointer;">
+                        <span>📥</span>
+                        导入数据
+                        <input type="file" accept=".json" onchange="importData(this)" style="display: none;">
+                    </label>
+                </div>
+                <p class="form-hint" style="margin-top: 1rem;">导出的数据可以用于备份或迁移到其他设备</p>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">⚠️</div>
+                    危险操作
+                </h3>
+                
+                <button class="btn btn-danger" onclick="clearAllData()">
+                    <span>🗑️</span>
+                    清除所有数据
+                </button>
+                <p class="form-hint" style="margin-top: 0.5rem;">此操作不可恢复，请谨慎操作</p>
+            </div>
+        </div>
     </div>
 
     <!-- 提示消息 -->
-    <div class="toast" id="toast">保存成功！</div>
+    <div class="toast" id="toast">✓ 保存成功！</div>
 
     <script>
         // ============ 导航切换 ============
@@ -752,16 +1534,24 @@
         const panelTitle = document.getElementById('panelTitle');
         
         const panelTitles = {
-            'basic': '基础设置',
-            'photos': '相册管理',
-            'music': '音乐设置',
-            'timeline': '故事时间轴',
-            'message': '心语留言'
+            'basic': '⚙️ 基础设置',
+            'password': '🔐 密码设置',
+            'theme': '🎨 主题样式',
+            'photos': '🖼️ 相册管理',
+            'music': '🎵 音乐设置',
+            'timeline': '📖 故事时间轴',
+            'message': '💌 心语留言',
+            'wishlist': '⭐ 心愿清单',
+            'effects': '✨ 特效设置',
+            'sweetwords': '💬 甜蜜话语',
+            'footer': '📝 页脚设置',
+            'backup': '💾 数据备份'
         };
 
         navItems.forEach(item => {
             item.addEventListener('click', () => {
                 const panel = item.dataset.panel;
+                if (!panel) return;
                 
                 navItems.forEach(i => i.classList.remove('active'));
                 panels.forEach(p => p.classList.remove('active'));
@@ -775,7 +1565,7 @@
         // ============ 显示提示 ============
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.innerHTML = (type === 'success' ? '✓ ' : '⚠ ') + message;
             toast.style.background = type === 'success' ? '#7fb77e' : '#e57373';
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2500);
@@ -1063,13 +1853,376 @@
             }
         }
 
+        // ============ 密码设置 ============
+        function savePasswordSettings() {
+            const settings = {
+                password: document.getElementById('sitePassword').value,
+                hint: document.getElementById('passwordHint').value,
+                title: document.getElementById('passwordTitle').value,
+                subtitle: document.getElementById('passwordSubtitle').value,
+                btnText: document.getElementById('passwordBtnText').value,
+                errorText: document.getElementById('passwordErrorText').value
+            };
+            localStorage.setItem('lovesite_password', JSON.stringify(settings));
+            showToast('密码设置保存成功！');
+        }
+
+        function loadPasswordSettings() {
+            const saved = localStorage.getItem('lovesite_password');
+            if (saved) {
+                const s = JSON.parse(saved);
+                document.getElementById('sitePassword').value = s.password || '20251224';
+                document.getElementById('passwordHint').value = s.hint || '💡 提示：一个特别的日子';
+                document.getElementById('passwordTitle').value = s.title || '这是我们的秘密小站';
+                document.getElementById('passwordSubtitle').value = s.subtitle || '请输入密码进入';
+                document.getElementById('passwordBtnText').value = s.btnText || '进入我们的世界 💕';
+                document.getElementById('passwordErrorText').value = s.errorText || '密码不正确，再想想哦～';
+            } else {
+                document.getElementById('sitePassword').value = '20251224';
+                document.getElementById('passwordHint').value = '💡 提示：一个特别的日子';
+                document.getElementById('passwordTitle').value = '这是我们的秘密小站';
+                document.getElementById('passwordSubtitle').value = '请输入密码进入';
+                document.getElementById('passwordBtnText').value = '进入我们的世界 💕';
+                document.getElementById('passwordErrorText').value = '密码不正确，再想想哦～';
+            }
+        }
+
+        // ============ 主题设置 ============
+        let currentTheme = 'pink';
+        const themePresets = {
+            pink: { primary: '#e8a4b8', secondary: '#f5d0d8', bg: '#faf6f2', text: '#4a3f44' },
+            purple: { primary: '#b8a4e8', secondary: '#d0d0f5', bg: '#f8f6fa', text: '#44404a' },
+            blue: { primary: '#a4c8e8', secondary: '#d0e8f5', bg: '#f6f9fa', text: '#404a4a' },
+            gold: { primary: '#e8c8a4', secondary: '#f5e8d0', bg: '#faf8f6', text: '#4a4840' },
+            mint: { primary: '#a4e8c8', secondary: '#d0f5e8', bg: '#f6faf8', text: '#404a44' },
+            coral: { primary: '#e8a4a4', secondary: '#f5d0d0', bg: '#faf6f6', text: '#4a4040' }
+        };
+
+        function applyTheme(theme) {
+            currentTheme = theme;
+            document.querySelectorAll('.theme-preset').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            const colors = themePresets[theme];
+            document.getElementById('primaryColor').value = colors.primary;
+            document.getElementById('secondaryColor').value = colors.secondary;
+            document.getElementById('bgColor').value = colors.bg;
+            document.getElementById('textColor').value = colors.text;
+        }
+
+        function saveThemeSettings() {
+            const settings = {
+                theme: currentTheme,
+                primary: document.getElementById('primaryColor').value,
+                secondary: document.getElementById('secondaryColor').value,
+                bg: document.getElementById('bgColor').value,
+                text: document.getElementById('textColor').value,
+                titleFont: document.getElementById('titleFont').value
+            };
+            localStorage.setItem('lovesite_theme', JSON.stringify(settings));
+            showToast('主题设置保存成功！');
+        }
+
+        function loadThemeSettings() {
+            const saved = localStorage.getItem('lovesite_theme');
+            if (saved) {
+                const s = JSON.parse(saved);
+                currentTheme = s.theme || 'pink';
+                document.getElementById('primaryColor').value = s.primary || '#e8a4b8';
+                document.getElementById('secondaryColor').value = s.secondary || '#f5d0d8';
+                document.getElementById('bgColor').value = s.bg || '#faf6f2';
+                document.getElementById('textColor').value = s.text || '#4a3f44';
+                document.getElementById('titleFont').value = s.titleFont || 'Ma Shan Zheng';
+            }
+        }
+
+        function resetTheme() {
+            applyTheme('pink');
+            document.getElementById('titleFont').value = 'Ma Shan Zheng';
+            showToast('已恢复默认主题');
+        }
+
+        // ============ 心愿清单 ============
+        let wishlistEnabled = true;
+        let wishItems = [
+            { text: '一起看一场日出', completed: false },
+            { text: '去一个新的城市旅行', completed: false },
+            { text: '一起做一顿大餐', completed: false },
+            { text: '拍一组情侣写真', completed: false }
+        ];
+
+        function toggleWishlist() {
+            wishlistEnabled = !wishlistEnabled;
+            document.getElementById('wishlistToggle').classList.toggle('active', wishlistEnabled);
+        }
+
+        function renderWishItems() {
+            const container = document.getElementById('wishlistItems');
+            container.innerHTML = wishItems.map((item, index) => `
+                <div class="wish-item">
+                    <div class="wish-checkbox ${item.completed ? 'checked' : ''}" onclick="toggleWishItem(${index})"></div>
+                    <input type="text" value="${item.text}" onchange="wishItems[${index}].text = this.value" style="${item.completed ? 'text-decoration: line-through; opacity: 0.6;' : ''}">
+                    <button class="btn btn-danger" onclick="removeWishItem(${index})" style="padding: 0.3rem 0.6rem;">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function toggleWishItem(index) {
+            wishItems[index].completed = !wishItems[index].completed;
+            renderWishItems();
+        }
+
+        function addWishItem() {
+            wishItems.push({ text: '新的心愿...', completed: false });
+            renderWishItems();
+        }
+
+        function removeWishItem(index) {
+            wishItems.splice(index, 1);
+            renderWishItems();
+        }
+
+        function saveWishlistSettings() {
+            const settings = {
+                enabled: wishlistEnabled,
+                items: wishItems
+            };
+            localStorage.setItem('lovesite_wishlist', JSON.stringify(settings));
+            showToast('心愿清单保存成功！');
+        }
+
+        function loadWishlistSettings() {
+            const saved = localStorage.getItem('lovesite_wishlist');
+            if (saved) {
+                const s = JSON.parse(saved);
+                wishlistEnabled = s.enabled !== false;
+                wishItems = s.items || wishItems;
+                document.getElementById('wishlistToggle').classList.toggle('active', wishlistEnabled);
+            }
+            renderWishItems();
+        }
+
+        // ============ 特效设置 ============
+        let effects = {
+            petal: true,
+            sparkle: true,
+            heart: true,
+            firework: true
+        };
+
+        function toggleEffect(type) {
+            effects[type] = !effects[type];
+            document.getElementById(type + 'Toggle').classList.toggle('active', effects[type]);
+        }
+
+        function saveEffectSettings() {
+            const settings = {
+                ...effects,
+                fireworkDates: document.getElementById('fireworkDates').value
+            };
+            localStorage.setItem('lovesite_effects', JSON.stringify(settings));
+            showToast('特效设置保存成功！');
+        }
+
+        function loadEffectSettings() {
+            const saved = localStorage.getItem('lovesite_effects');
+            if (saved) {
+                const s = JSON.parse(saved);
+                effects = { petal: s.petal !== false, sparkle: s.sparkle !== false, heart: s.heart !== false, firework: s.firework !== false };
+                document.getElementById('petalToggle').classList.toggle('active', effects.petal);
+                document.getElementById('sparkleToggle').classList.toggle('active', effects.sparkle);
+                document.getElementById('heartToggle').classList.toggle('active', effects.heart);
+                document.getElementById('fireworkToggle').classList.toggle('active', effects.firework);
+                document.getElementById('fireworkDates').value = s.fireworkDates || '12-24, 02-14, 05-20';
+            } else {
+                document.getElementById('fireworkDates').value = '12-24, 02-14, 05-20';
+            }
+        }
+
+        // ============ 甜蜜话语 ============
+        let sweetwordsEnabled = true;
+        let sweetwords = [
+            '今天也要爱你多一点 💕',
+            '有你的日子，每天都是情人节',
+            '你是我生命中最美的意外',
+            '想和你一起慢慢变老',
+            '遇见你，是我最幸运的事'
+        ];
+
+        function toggleSweetwords() {
+            sweetwordsEnabled = !sweetwordsEnabled;
+            document.getElementById('sweetwordsToggle').classList.toggle('active', sweetwordsEnabled);
+        }
+
+        function renderSweetwords() {
+            const container = document.getElementById('sweetwordsList');
+            container.innerHTML = sweetwords.map((text, index) => `
+                <div class="sweet-message-item">
+                    <input type="text" value="${text}" onchange="sweetwords[${index}] = this.value">
+                    <button class="btn btn-danger" onclick="removeSweetWord(${index})" style="padding: 0.3rem 0.6rem;">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function addSweetWord() {
+            sweetwords.push('新的甜蜜话语...');
+            renderSweetwords();
+        }
+
+        function removeSweetWord(index) {
+            sweetwords.splice(index, 1);
+            renderSweetwords();
+        }
+
+        function saveSweetwordsSettings() {
+            const settings = {
+                enabled: sweetwordsEnabled,
+                frequency: document.getElementById('sweetwordsFreq').value,
+                messages: sweetwords
+            };
+            localStorage.setItem('lovesite_sweetwords', JSON.stringify(settings));
+            showToast('甜蜜话语保存成功！');
+        }
+
+        function loadSweetwordsSettings() {
+            const saved = localStorage.getItem('lovesite_sweetwords');
+            if (saved) {
+                const s = JSON.parse(saved);
+                sweetwordsEnabled = s.enabled !== false;
+                sweetwords = s.messages || sweetwords;
+                document.getElementById('sweetwordsToggle').classList.toggle('active', sweetwordsEnabled);
+                document.getElementById('sweetwordsFreq').value = s.frequency || 'always';
+            }
+            renderSweetwords();
+        }
+
+        // ============ 页脚设置 ============
+        let navMenuItems = [
+            { name: '首页', href: '#home', enabled: true },
+            { name: '相册', href: '#gallery', enabled: true },
+            { name: '音乐', href: '#music', enabled: true },
+            { name: '故事', href: '#timeline', enabled: true },
+            { name: '心语', href: '#message', enabled: true }
+        ];
+
+        function renderNavItems() {
+            const container = document.getElementById('navItems');
+            container.innerHTML = navMenuItems.map((item, index) => `
+                <div class="effect-toggle" style="margin-bottom: 0.5rem;">
+                    <div class="effect-info">
+                        <input type="text" value="${item.name}" onchange="navMenuItems[${index}].name = this.value" style="width: 100px; padding: 0.4rem;">
+                    </div>
+                    <div class="toggle ${item.enabled ? 'active' : ''}" onclick="toggleNavItem(${index})"></div>
+                </div>
+            `).join('');
+        }
+
+        function toggleNavItem(index) {
+            navMenuItems[index].enabled = !navMenuItems[index].enabled;
+            renderNavItems();
+        }
+
+        function saveFooterSettings() {
+            const settings = {
+                text: document.getElementById('footerText').value,
+                date: document.getElementById('footerDate').value,
+                navItems: navMenuItems
+            };
+            localStorage.setItem('lovesite_footer', JSON.stringify(settings));
+            showToast('页脚设置保存成功！');
+        }
+
+        function loadFooterSettings() {
+            const saved = localStorage.getItem('lovesite_footer');
+            if (saved) {
+                const s = JSON.parse(saved);
+                document.getElementById('footerText').value = s.text || 'Made with ♥';
+                document.getElementById('footerDate').value = s.date || 'February 2025';
+                if (s.navItems) navMenuItems = s.navItems;
+            } else {
+                document.getElementById('footerText').value = 'Made with ♥';
+                document.getElementById('footerDate').value = 'February 2025';
+            }
+            renderNavItems();
+        }
+
+        // ============ 数据备份 ============
+        function exportAllData() {
+            const allData = {
+                basic: localStorage.getItem('lovesite_basic'),
+                password: localStorage.getItem('lovesite_password'),
+                theme: localStorage.getItem('lovesite_theme'),
+                photos: localStorage.getItem('lovesite_photos'),
+                music: localStorage.getItem('lovesite_music'),
+                timeline: localStorage.getItem('lovesite_timeline'),
+                message: localStorage.getItem('lovesite_message'),
+                wishlist: localStorage.getItem('lovesite_wishlist'),
+                effects: localStorage.getItem('lovesite_effects'),
+                sweetwords: localStorage.getItem('lovesite_sweetwords'),
+                footer: localStorage.getItem('lovesite_footer')
+            };
+            
+            const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `爱情网站备份_${new Date().toLocaleDateString()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('数据导出成功！');
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        Object.keys(data).forEach(key => {
+                            if (data[key]) {
+                                localStorage.setItem('lovesite_' + key, data[key]);
+                            }
+                        });
+                        showToast('数据导入成功！即将刷新页面...');
+                        setTimeout(() => location.reload(), 1500);
+                    } catch (err) {
+                        showToast('导入失败：文件格式错误', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('确定要清除所有数据吗？此操作不可恢复！')) {
+                const keys = ['basic', 'password', 'theme', 'photos', 'music', 'timeline', 'message', 'wishlist', 'effects', 'sweetwords', 'footer'];
+                keys.forEach(key => localStorage.removeItem('lovesite_' + key));
+                showToast('数据已清除！即将刷新页面...');
+                setTimeout(() => location.reload(), 1500);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('photoCount').textContent = photos.length;
+            document.getElementById('storyCount').textContent = timelineItems.length;
+            document.getElementById('wishCount').textContent = wishItems.length;
+        }
+
         // ============ 初始化 ============
         document.addEventListener('DOMContentLoaded', () => {
             loadBasicSettings();
+            loadPasswordSettings();
+            loadThemeSettings();
             loadPhotoSettings();
             loadMusicSettings();
             loadTimelineSettings();
             loadMessageSettings();
+            loadWishlistSettings();
+            loadEffectSettings();
+            loadSweetwordsSettings();
+            loadFooterSettings();
+            updateStats();
         });
     </script>
 </body>
