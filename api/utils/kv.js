@@ -26,12 +26,23 @@ export async function getConfig() {
 
   if (raw == null) return null;
   if (typeof raw === 'object') return raw;
+
   if (typeof raw === 'string') {
-    try {
-      return JSON.parse(raw);
-    } catch {
-      return null;
+    // 有些历史写入会出现多层 JSON 字符串，这里最多解两层
+    let v = raw;
+    for (let i = 0; i < 2; i++) {
+      try {
+        const parsed = JSON.parse(v);
+        if (typeof parsed === 'string') {
+          v = parsed;
+          continue;
+        }
+        return parsed;
+      } catch {
+        break;
+      }
     }
+    return null;
   }
 
   return null;
@@ -41,17 +52,17 @@ export async function saveConfig(configObj) {
   const kvUrl = mustEnv('KV_REST_API_URL');
   const kvToken = mustEnv('KV_REST_API_TOKEN');
 
-  // ✅ Upstash REST /set 的正确用法：body 必须是 JSON 数组 [key, value]
-  // value 我们统一存储为 JSON 字符串，读取时再 JSON.parse
-  const payload = [KEY, JSON.stringify(configObj)];
+  // ✅ 与你最初项目的 URL 形式保持一致：/set/{key}
+  // 但修复之前的错误：只存“一层 JSON 字符串”，不要双 stringify。
+  const value = JSON.stringify(configObj);
 
-  const kvRes = await fetch(`${kvUrl}/set`, {
+  const kvRes = await fetch(`${kvUrl}/set/${encodeURIComponent(KEY)}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${kvToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(value),
   });
 
   if (!kvRes.ok) {
