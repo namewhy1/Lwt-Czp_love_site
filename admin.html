@@ -2276,17 +2276,17 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>开始日期（可不填）</label>
-                            <input type="date" value="${escapeAttr(item.startDate || '')}" onchange="broadcastItems[${index}].startDate = this.value">
+                            <input type="date" value="${escapeHtml(item.startDate || '')}" onchange="broadcastItems[${index}].startDate = this.value">
                             <p class="form-hint">不填表示从现在起都可以</p>
                         </div>
                         <div class="form-group">
                             <label>结束日期（可不填）</label>
-                            <input type="date" value="${escapeAttr(item.endDate || '')}" onchange="broadcastItems[${index}].endDate = this.value">
+                            <input type="date" value="${escapeHtml(item.endDate || '')}" onchange="broadcastItems[${index}].endDate = this.value">
                             <p class="form-hint">不填表示一直有效</p>
                         </div>
                         <div class="form-group">
                             <label>倒计时目标日期（可选）</label>
-                            <input type="date" value="${escapeAttr(item.countdownDate || '')}" onchange="broadcastItems[${index}].countdownDate = this.value">
+                            <input type="date" value="${escapeHtml(item.countdownDate || '')}" onchange="broadcastItems[${index}].countdownDate = this.value">
                             <p class="form-hint">例如“见面日期”，首页显示还有多少天</p>
                         </div>
                     </div>
