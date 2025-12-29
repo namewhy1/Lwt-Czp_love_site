@@ -1,62 +1,43 @@
 import { put } from '@vercel/blob';
+import { json, verifyAdminToken } from '../utils/http.js';
 
 export const config = {
   api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
+    bodyParser: false, // 必须禁用，才能处理二进制流
   },
 };
 
-function json(res, status, data) {
-  res.statusCode = status;
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(data));
-}
-
 export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return json(res, 405, { error: 'Method not allowed' });
+  }
+
+  // 验证管理员权限
+  const verify = verifyAdminToken(req);
+  if (!verify.valid) {
+    return json(res, verify.status, { error: verify.error });
+  }
+
+  const filename = req.headers['x-filename'] || 'music.mp3';
+  if (!filename) {
+    return json(res, 400, { error: 'Missing x-filename header' });
+  }
+
   try {
-    if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
-
-    const adminToken = process.env.ADMIN_TOKEN;
-    const provided = req.headers['x-admin-token'];
-    if (!adminToken) return json(res, 500, { error: 'ADMIN_TOKEN is not configured on Vercel.' });
-    if (!provided || provided !== adminToken) return json(res, 401, { error: 'Unauthorized' });
-
-    // Expected body: { filename, contentType, dataUrl }
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    const { filename, contentType, dataUrl } = body || {};
-
-    if (!filename || !dataUrl) {
-      return json(res, 400, { error: 'Missing filename or dataUrl' });
-    }
-
-    // dataUrl like: data:image/jpeg;base64,....
-    const match = /^data:([^;]+);base64,(.+)$/.exec(dataUrl);
-    if (!match) return json(res, 400, { error: 'Invalid dataUrl' });
-
-    const ct = contentType || match[1] || 'application/octet-stream';
-    const base64 = match[2];
-    const buffer = Buffer.from(base64, 'base64');
-
-    // Basic size guard (10MB here; you can lower it)
-    if (buffer.length > 10 * 1024 * 1024) {
-      return json(res, 413, { error: 'File too large (max 10MB)' });
-    }
-
-    // Use a unique path
     const safeName = String(filename).replace(/[^a-zA-Z0-9._-]/g, '_');
-    const key = `lovesite/${Date.now()}_${safeName}`;
+    const key = `lovesite/music/${Date.now()}_${safeName}`;
 
-    const blob = await put(key, buffer, {
+    // 直接从请求体上传到 Vercel Blob
+    const blob = await put(key, req, {
       access: 'public',
-      contentType: ct,
+      contentType: req.headers['content-type'] || 'audio/mpeg',
       addRandomSuffix: false,
     });
 
-    return json(res, 200, { ok: true, url: blob.url, pathname: blob.pathname, contentType: ct, size: buffer.length });
+    return json(res, 200, { ok: true, ...blob });
+
   } catch (e) {
-    return json(res, 500, { error: 'Unexpected error', detail: String(e) });
+    console.error('upload/music error:', e);
+    return json(res, 500, { error: 'Failed to upload music', detail: String(e) });
   }
 }
-
