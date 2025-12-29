@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>遇见你，真好</title>
-    
+
     <!-- 引入优美的字体 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
             --primary-pink: #e8a4b8;
@@ -78,16 +81,58 @@
             animation: float-heart 6s ease-in-out infinite;
         }
 
-        .password-decoration .heart:nth-child(1) { top: 10%; left: 10%; font-size: 3rem; animation-delay: 0s; }
-        .password-decoration .heart:nth-child(2) { top: 20%; right: 15%; font-size: 2rem; animation-delay: 1s; }
-        .password-decoration .heart:nth-child(3) { top: 60%; left: 5%; font-size: 2.5rem; animation-delay: 2s; }
-        .password-decoration .heart:nth-child(4) { top: 70%; right: 10%; font-size: 1.8rem; animation-delay: 3s; }
-        .password-decoration .heart:nth-child(5) { top: 40%; left: 80%; font-size: 2.2rem; animation-delay: 4s; }
-        .password-decoration .heart:nth-child(6) { top: 85%; left: 50%; font-size: 2rem; animation-delay: 5s; }
+        .password-decoration .heart:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            font-size: 3rem;
+            animation-delay: 0s;
+        }
+
+        .password-decoration .heart:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            font-size: 2rem;
+            animation-delay: 1s;
+        }
+
+        .password-decoration .heart:nth-child(3) {
+            top: 60%;
+            left: 5%;
+            font-size: 2.5rem;
+            animation-delay: 2s;
+        }
+
+        .password-decoration .heart:nth-child(4) {
+            top: 70%;
+            right: 10%;
+            font-size: 1.8rem;
+            animation-delay: 3s;
+        }
+
+        .password-decoration .heart:nth-child(5) {
+            top: 40%;
+            left: 80%;
+            font-size: 2.2rem;
+            animation-delay: 4s;
+        }
+
+        .password-decoration .heart:nth-child(6) {
+            top: 85%;
+            left: 50%;
+            font-size: 2rem;
+            animation-delay: 5s;
+        }
 
         @keyframes float-heart {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
         }
 
         .password-card {
@@ -107,6 +152,7 @@
                 opacity: 0;
                 transform: translateY(30px) scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -131,10 +177,23 @@
         }
 
         @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.1); }
-            50% { transform: scale(1); }
-            75% { transform: scale(1.15); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.1);
+            }
+
+            50% {
+                transform: scale(1);
+            }
+
+            75% {
+                transform: scale(1.15);
+            }
         }
 
         .password-title {
@@ -193,9 +252,21 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-10px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(10px);
+            }
         }
 
         .password-btn {
@@ -260,6 +331,7 @@
                 opacity: 1;
                 transform: translateY(0) scale(1) rotate(0deg);
             }
+
             100% {
                 opacity: 0;
                 transform: translateY(-30px) scale(0) rotate(180deg);
@@ -314,17 +386,59 @@
             animation: floatHeart 15s ease-in-out infinite;
         }
 
-        .heart-1 { top: 10%; left: 5%; font-size: 3rem; animation-delay: 0s; }
-        .heart-2 { top: 30%; right: 8%; font-size: 2rem; animation-delay: 3s; }
-        .heart-3 { top: 60%; left: 10%; font-size: 2.5rem; animation-delay: 6s; }
-        .heart-4 { top: 80%; right: 15%; font-size: 1.8rem; animation-delay: 9s; }
-        .heart-5 { top: 45%; left: 85%; font-size: 2.2rem; animation-delay: 12s; }
+        .heart-1 {
+            top: 10%;
+            left: 5%;
+            font-size: 3rem;
+            animation-delay: 0s;
+        }
+
+        .heart-2 {
+            top: 30%;
+            right: 8%;
+            font-size: 2rem;
+            animation-delay: 3s;
+        }
+
+        .heart-3 {
+            top: 60%;
+            left: 10%;
+            font-size: 2.5rem;
+            animation-delay: 6s;
+        }
+
+        .heart-4 {
+            top: 80%;
+            right: 15%;
+            font-size: 1.8rem;
+            animation-delay: 9s;
+        }
+
+        .heart-5 {
+            top: 45%;
+            left: 85%;
+            font-size: 2.2rem;
+            animation-delay: 12s;
+        }
 
         @keyframes floatHeart {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            25% { transform: translateY(-20px) rotate(5deg) scale(1.05); }
-            50% { transform: translateY(-10px) rotate(-3deg) scale(1); }
-            75% { transform: translateY(-25px) rotate(3deg) scale(1.03); }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+
+            25% {
+                transform: translateY(-20px) rotate(5deg) scale(1.05);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-3deg) scale(1);
+            }
+
+            75% {
+                transform: translateY(-25px) rotate(3deg) scale(1.03);
+            }
         }
 
         /* 导航栏 */
@@ -417,9 +531,9 @@
             text-align: center;
             position: relative;
             padding: 6rem 2rem;
-            background: linear-gradient(180deg, 
-                rgba(232, 164, 184, 0.1) 0%, 
-                rgba(250, 246, 242, 0) 100%);
+            background: linear-gradient(180deg,
+                    rgba(232, 164, 184, 0.1) 0%,
+                    rgba(250, 246, 242, 0) 100%);
         }
 
         .hero-decoration {
@@ -436,8 +550,17 @@
         }
 
         @keyframes pulse-ring {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.5; }
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                opacity: 0.5;
+            }
         }
 
         .hero-decoration::before {
@@ -484,12 +607,26 @@
             animation: heart-float 2s ease-in-out infinite;
         }
 
-        .hero h1::before { left: -3rem; animation-delay: 0s; }
-        .hero h1::after { right: -3rem; animation-delay: 0.5s; }
+        .hero h1::before {
+            left: -3rem;
+            animation-delay: 0s;
+        }
+
+        .hero h1::after {
+            right: -3rem;
+            animation-delay: 0.5s;
+        }
 
         @keyframes heart-float {
-            0%, 100% { transform: translateY(-50%) scale(1); }
-            50% { transform: translateY(-60%) scale(1.2); }
+
+            0%,
+            100% {
+                transform: translateY(-50%) scale(1);
+            }
+
+            50% {
+                transform: translateY(-60%) scale(1.2);
+            }
         }
 
         /* 打字机效果容器 */
@@ -517,7 +654,9 @@
         }
 
         @keyframes blink-cursor {
-            50% { border-color: transparent; }
+            50% {
+                border-color: transparent;
+            }
         }
 
         /* 恋爱计数器 */
@@ -606,8 +745,17 @@
         }
 
         @keyframes scrollPulse {
-            0%, 100% { transform: scaleY(1); opacity: 1; }
-            50% { transform: scaleY(0.5); opacity: 0.5; }
+
+            0%,
+            100% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scaleY(0.5);
+                opacity: 0.5;
+            }
         }
 
         /* 区块标题 */
@@ -658,8 +806,17 @@
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
         }
 
         /* 相册区域 */
@@ -821,10 +978,10 @@
         /* 音乐区域 */
         .music-section {
             padding: 6rem 0;
-            background: linear-gradient(180deg, 
-                transparent 0%, 
-                rgba(232, 164, 184, 0.08) 50%,
-                transparent 100%);
+            background: linear-gradient(180deg,
+                    transparent 0%,
+                    rgba(232, 164, 184, 0.08) 50%,
+                    transparent 100%);
         }
 
         .music-card {
@@ -851,9 +1008,17 @@
         }
 
         @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .music-vinyl {
@@ -877,8 +1042,13 @@
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .vinyl-disc::before {
@@ -1116,11 +1286,11 @@
             transform: translateX(-50%);
             width: 2px;
             height: 100%;
-            background: linear-gradient(180deg, 
-                transparent, 
-                var(--primary-pink) 10%, 
-                var(--primary-pink) 90%, 
-                transparent);
+            background: linear-gradient(180deg,
+                    transparent,
+                    var(--primary-pink) 10%,
+                    var(--primary-pink) 90%,
+                    transparent);
         }
 
         .timeline-item {
@@ -1241,10 +1411,10 @@
         /* 留言区域 */
         .message-section {
             padding: 8rem 0;
-            background: linear-gradient(180deg, 
-                transparent 0%, 
-                rgba(232, 164, 184, 0.1) 50%,
-                rgba(201, 184, 208, 0.1) 100%);
+            background: linear-gradient(180deg,
+                    transparent 0%,
+                    rgba(232, 164, 184, 0.1) 50%,
+                    rgba(201, 184, 208, 0.1) 100%);
         }
 
         .message-card {
@@ -1351,6 +1521,7 @@
                 opacity: 0;
                 transform: translateY(40px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -1396,8 +1567,17 @@
         }
 
         @keyframes loading-pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.7; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 0.7;
+            }
         }
 
         .loading-text {
@@ -1852,6 +2032,135 @@
             box-shadow: 0 10px 30px rgba(232, 164, 184, 0.4);
         }
 
+        /* ============ EasterEgg（彩蛋通用 UI） ============ */
+        .finals-badge {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 1200;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(232, 164, 184, 0.35);
+            backdrop-filter: blur(10px);
+            border-radius: 999px;
+            padding: 0.6rem 0.9rem;
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 2px;
+            color: var(--text-dark);
+            box-shadow: 0 12px 30px rgba(232, 164, 184, 0.18);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .finals-badge:hover {
+            transform: translateY(-2px);
+        }
+
+        .finals-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99998;
+        }
+
+        .finals-modal.show {
+            display: flex;
+        }
+
+        .finals-modal-card {
+            width: min(420px, 92vw);
+            background: white;
+            border-radius: 22px;
+            padding: 2rem 1.6rem;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .finals-modal-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .finals-modal-content {
+            font-family: 'Noto Serif SC', serif;
+            color: var(--text-light);
+            line-height: 1.9;
+            white-space: pre-line;
+        }
+
+        .finals-modal-actions {
+            margin-top: 1.4rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .finals-btn {
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 2px;
+        }
+
+        .finals-btn-primary {
+            background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+            color: white;
+        }
+
+        .finals-btn-secondary {
+            background: rgba(232, 164, 184, 0.12);
+            color: var(--text-dark);
+        }
+
+        .finals-stickers {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+        }
+
+        .finals-sticker {
+            padding: 0.45rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(250, 246, 242, 0.95);
+            border: 1px solid rgba(232, 164, 184, 0.25);
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 1px;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .finals-sticker.done {
+            background: rgba(127, 183, 126, 0.15);
+            border-color: rgba(127, 183, 126, 0.35);
+            color: #3d6b3d;
+        }
+
+        .finals-night-tip {
+            position: fixed;
+            left: 50%;
+            bottom: 80px;
+            transform: translateX(-50%);
+            z-index: 1100;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(232, 164, 184, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 999px;
+            padding: 0.6rem 1rem;
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10);
+        }
+
         /* ============ 烟花特效 ============ */
         .firework-container {
             position: fixed;
@@ -1876,9 +2185,11 @@
                 opacity: 1;
                 transform: scale(0);
             }
+
             50% {
                 opacity: 1;
             }
+
             100% {
                 opacity: 0;
                 transform: scale(1) translateY(-100px);
@@ -1898,6 +2209,7 @@
                 opacity: 1;
                 transform: translate(0, 0) scale(1);
             }
+
             100% {
                 opacity: 0;
                 transform: translate(var(--tx), var(--ty)) scale(0);
@@ -1928,11 +2240,19 @@
         }
 
         @keyframes banner-bounce {
-            0% { transform: translateX(-50%) translateY(-50px); opacity: 0; }
-            100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            0% {
+                transform: translateX(-50%) translateY(-50px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- 密码保护界面 -->
     <div class="password-screen" id="passwordScreen">
@@ -1944,31 +2264,25 @@
             <div class="heart">💗</div>
             <div class="heart">💖</div>
         </div>
-        
+
         <div class="password-card">
             <div class="password-icon">💝</div>
             <h2 class="password-title">这是我们的秘密小站</h2>
             <p class="password-subtitle">请输入密码进入</p>
-            
+
             <div class="password-hint">
                 💡 提示：一个特别的日子
             </div>
-            
+
             <div class="password-input-wrapper">
-                <input 
-                    type="password" 
-                    class="password-input" 
-                    id="passwordInput" 
-                    placeholder="请输入密码"
-                    maxlength="8"
-                    autocomplete="off"
-                >
+                <input type="password" class="password-input" id="passwordInput" placeholder="请输入密码" maxlength="8"
+                    autocomplete="off">
             </div>
-            
+
             <button class="password-btn" onclick="checkPassword()">
                 进入我们的世界 💕
             </button>
-            
+
             <p class="password-error-msg" id="errorMsg">密码不正确，再想想哦～</p>
         </div>
     </div>
@@ -2017,7 +2331,7 @@
             <div class="typewriter-container">
                 <p class="hero-quote">「<span class="typewriter" id="typewriter"></span>」</p>
             </div>
-            
+
             <!-- 恋爱计数器 -->
             <div class="love-counter">
                 <p class="love-counter-title">我们已经在一起</p>
@@ -2040,7 +2354,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="scroll-indicator">
                 <span></span>
             </div>
@@ -2050,7 +2364,8 @@
                 <div class="broadcast-tag" id="broadcastTag" style="display:none;">期末加油</div>
                 <div class="broadcast-title" id="broadcastTitle">期末周加油</div>
                 <div class="broadcast-content" id="broadcastContent">你已经很努力了，我一直在你身边。</div>
-                <div class="broadcast-countdown" id="broadcastCountdown" style="display:none;">距离见面还有 <span id="broadcastDays">0</span> 天</div>
+                <div class="broadcast-countdown" id="broadcastCountdown" style="display:none;">距离见面还有 <span
+                        id="broadcastDays">0</span> 天</div>
             </div>
         </section>
 
@@ -2069,18 +2384,22 @@
                 <div class="photo-gallery fade-in">
                     <div class="photo-frame">
                         <div class="photo-slider">
-                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/28a75a5221c3b591.jpg" class="photo active" alt="我们的照片1">
-                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/30e3dc68a22e50df.jpg" class="photo" alt="我们的照片2">
-                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/7050e34740e725a1.jpg" class="photo" alt="我们的照片3">
-                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/1cc3f3925001dc79.jpg" class="photo" alt="我们的照片4">
-                            
+                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/28a75a5221c3b591.jpg" class="photo active"
+                                alt="我们的照片1">
+                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/30e3dc68a22e50df.jpg" class="photo"
+                                alt="我们的照片2">
+                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/7050e34740e725a1.jpg" class="photo"
+                                alt="我们的照片3">
+                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/1cc3f3925001dc79.jpg" class="photo"
+                                alt="我们的照片4">
+
                             <div class="photo-caption" id="photoCaption">每一张照片，都是一段美好的回忆</div>
-                            
+
                             <div class="slider-arrows">
                                 <button class="arrow-btn" onclick="prevPhoto()">‹</button>
                                 <button class="arrow-btn" onclick="nextPhoto()">›</button>
                             </div>
-                            
+
                             <div class="slider-controls">
                                 <button class="slider-dot active" onclick="showPhoto(0)"></button>
                                 <button class="slider-dot" onclick="showPhoto(1)"></button>
@@ -2088,13 +2407,17 @@
                                 <button class="slider-dot" onclick="showPhoto(3)"></button>
                             </div>
                         </div>
-                        
+
                         <!-- 缩略图 -->
                         <div class="photo-thumbnails">
-                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/28a75a5221c3b591.jpg" class="thumbnail active" onclick="showPhoto(0)" alt="缩略图1">
-                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/30e3dc68a22e50df.jpg" class="thumbnail" onclick="showPhoto(1)" alt="缩略图2">
-                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/7050e34740e725a1.jpg" class="thumbnail" onclick="showPhoto(2)" alt="缩略图3">
-                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/1cc3f3925001dc79.jpg" class="thumbnail" onclick="showPhoto(3)" alt="缩略图4">
+                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/28a75a5221c3b591.jpg" class="thumbnail active"
+                                onclick="showPhoto(0)" alt="缩略图1">
+                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/30e3dc68a22e50df.jpg" class="thumbnail"
+                                onclick="showPhoto(1)" alt="缩略图2">
+                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/7050e34740e725a1.jpg" class="thumbnail"
+                                onclick="showPhoto(2)" alt="缩略图3">
+                            <img src="https://s3.bmp.ovh/imgs/2025/12/28/1cc3f3925001dc79.jpg" class="thumbnail"
+                                onclick="showPhoto(3)" alt="缩略图4">
                         </div>
                     </div>
                 </div>
@@ -2119,12 +2442,12 @@
                             <div class="vinyl-grooves"></div>
                         </div>
                     </div>
-                    
+
                     <div class="music-info">
                         <h3 class="music-title">晴天</h3>
                         <p class="music-artist">周杰伦</p>
                     </div>
-                    
+
                     <div class="music-controls">
                         <button class="control-btn" onclick="prevSong()">⏮</button>
                         <button class="play-btn" id="playBtn" onclick="toggleMusic()">
@@ -2132,7 +2455,7 @@
                         </button>
                         <button class="control-btn" onclick="nextSong()">⏭</button>
                     </div>
-                    
+
                     <div class="progress-container">
                         <div class="progress-bar" id="progressBar" onclick="seekMusic(event)">
                             <div class="progress-fill" id="progressFill">
@@ -2144,14 +2467,15 @@
                             <span id="totalTime">0:00</span>
                         </div>
                     </div>
-                    
+
                     <div class="volume-control">
                         <span class="volume-icon" id="volumeIcon" onclick="toggleMute()">🔊</span>
-                        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70" oninput="changeVolume(this.value)">
+                        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70"
+                            oninput="changeVolume(this.value)">
                     </div>
                 </div>
             </div>
-            
+
             <audio id="bgMusic" src="your-music.mp3"></audio>
         </section>
 
@@ -2235,7 +2559,8 @@
 
                 <div class="wishlist-card fade-in">
                     <div class="wishlist-progress">
-                        <p class="wishlist-progress-text">已完成 <span id="wishCompleted">0</span> / <span id="wishTotal">0</span> 个心愿</p>
+                        <p class="wishlist-progress-text">已完成 <span id="wishCompleted">0</span> / <span
+                                id="wishTotal">0</span> 个心愿</p>
                         <div class="wishlist-progress-bar">
                             <div class="wishlist-progress-fill" id="wishProgressFill" style="width: 0%;"></div>
                         </div>
@@ -2261,6 +2586,24 @@
                 <button class="sweet-popup-close" onclick="closeSweetPopup()">我知道啦 ♥</button>
             </div>
         </div>
+        <!-- 彩蛋：徽章 + 鼓励弹窗 + 夜间提示 -->
+        <div class="finals-badge" id="eggBadge" style="display:none;">✨ 彩蛋</div>
+
+        <div class="finals-modal" id="eggModal">
+            <div class="finals-modal-card">
+                <div class="finals-modal-title" id="eggModalTitle">你真的很棒</div>
+                <div class="finals-modal-content" id="eggModalContent">别怕，我一直在。</div>
+
+                <div class="finals-stickers" id="eggStickers"></div>
+
+                <div class="finals-modal-actions">
+                    <button class="finals-btn finals-btn-secondary" id="eggModalClose">我知道啦</button>
+                    <button class="finals-btn finals-btn-primary" id="eggModalCheer">再来一句</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="finals-night-tip" id="eggNightTip" style="display:none;">该休息啦，明天也会继续为你加油。</div>
 
         <!-- 烟花容器 -->
         <div class="firework-container" id="fireworkContainer"></div>
@@ -2275,7 +2618,7 @@
     <script>
         // ============ 密码验证 ============
         let SITE_PASSWORD = '20251224';
-        
+
         // 先加载密码设置
         function loadPasswordConfig() {
             try {
@@ -2283,14 +2626,14 @@
                 if (saved) {
                     const s = JSON.parse(saved);
                     SITE_PASSWORD = s.password || '20251224';
-                    
+
                     // 更新密码页面文案
                     const titleEl = document.querySelector('.password-title');
                     const subtitleEl = document.querySelector('.password-subtitle');
                     const hintEl = document.querySelector('.password-hint');
                     const btnEl = document.querySelector('.password-btn');
                     const errorEl = document.getElementById('errorMsg');
-                    
+
                     if (titleEl && s.title) titleEl.textContent = s.title;
                     if (subtitleEl && s.subtitle) subtitleEl.textContent = s.subtitle;
                     if (hintEl && s.hint) hintEl.innerHTML = s.hint;
@@ -2301,16 +2644,16 @@
                 console.log('加载密码配置失败');
             }
         }
-        
+
         // 检查是否已经验证过（使用 sessionStorage，关闭浏览器后失效）
         function checkIfUnlocked() {
             return sessionStorage.getItem('site_unlocked') === 'true';
         }
-        
+
         function checkPassword() {
             const input = document.getElementById('passwordInput');
             const errorMsg = document.getElementById('errorMsg');
-            
+
             if (input.value === SITE_PASSWORD) {
                 // 密码正确
                 sessionStorage.setItem('site_unlocked', 'true');
@@ -2319,28 +2662,28 @@
                 // 密码错误
                 input.classList.add('error');
                 errorMsg.classList.add('show');
-                
+
                 setTimeout(() => {
                     input.classList.remove('error');
                 }, 500);
-                
+
                 setTimeout(() => {
                     errorMsg.classList.remove('show');
                 }, 2000);
             }
         }
-        
+
         function unlockSite() {
             const passwordScreen = document.getElementById('passwordScreen');
             const mainContent = document.getElementById('mainContent');
-            
+
             passwordScreen.classList.add('hidden');
             mainContent.classList.add('unlocked');
-            
+
             // 初始化网站功能
             initializeSite();
         }
-        
+
         // 页面加载时先加载密码配置（本地缓存）
         loadPasswordConfig();
 
@@ -2356,17 +2699,17 @@
                     localStorage.setItem('lovesite_password', JSON.stringify(cloud.password));
                     loadPasswordConfig();
                 }
-            } catch (_) {}
+            } catch (_) { }
         }
         refreshPasswordConfigFromCloudIfAny();
-        
+
         // 监听回车键
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+        document.getElementById('passwordInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 checkPassword();
             }
         });
-        
+
         // 页面加载时检查
         if (checkIfUnlocked()) {
             document.getElementById('passwordScreen').classList.add('hidden');
@@ -2378,25 +2721,25 @@
         async function initializeSite() {
             // 从管理后台/云端读取配置
             await loadAdminSettings();
-            
+
             // 应用设置
             applySettings();
-            
+
             // 隐藏加载动画
             setTimeout(() => {
                 const loadingScreen = document.getElementById('loadingScreen');
                 if (loadingScreen) {
                     loadingScreen.classList.add('hidden');
                 }
-                
+
                 // 显示甜蜜话语弹窗
                 showSweetPopup();
             }, 1000);
-            
+
             // 启动各种效果
             startTypewriter();
             startLoveCounter();
-            
+
             // 根据配置启动特效
             if (!CONFIG.effects || CONFIG.effects.petal !== false) {
                 startPetalEffect();
@@ -2404,10 +2747,10 @@
             if (!CONFIG.effects || CONFIG.effects.sparkle !== false) {
                 startSparkleEffect();
             }
-            
+
             startAutoSlide();
             initScrollEffects();
-            
+
             // 检查纪念日
             checkAnniversary();
         }
@@ -2491,9 +2834,28 @@
                         countdownDate: ''
                     }
                 ]
-            }
+            },
+            easterEgg: {
+                enabled: true,
+                startDate: '',
+                endDate: '',
+                badgeText: '📚 期末周加油',
+                cheerTitle: '你真的很棒',
+                cheerMessages: [
+                    '不管考得怎样，你已经很努力了。\n我一直在你身边。',
+                    '慢慢来，一步一步就会到终点。\n抱抱。',
+                    '累了就休息一下，喝口水也很棒。\n我为你骄傲。'
+                ],
+                stickers: [
+                    { id: 'study', text: '我今天复习了' },
+                    { id: 'eat', text: '我今天好好吃饭了' },
+                    { id: 'sleep', text: '我今天早点睡' }
+                ],
+                nightTipEnabled: true,
+                nightTipText: '该休息啦，明天也会继续为你加油。'
+            },
         };
-        
+
         async function loadAdminSettings() {
             // 1) 优先从云端拉取（跨设备同步）
             try {
@@ -2521,12 +2883,12 @@
                     if (basic.siteTitle) CONFIG.siteTitle = basic.siteTitle;
                     if (basic.siteSubtitle) CONFIG.siteSubtitle = basic.siteSubtitle;
                 }
-                
+
                 const photoSettings = localStorage.getItem('lovesite_photos');
                 if (photoSettings) {
                     CONFIG.photos = JSON.parse(photoSettings);
                 }
-                
+
                 const musicSettings = localStorage.getItem('lovesite_music');
                 if (musicSettings) {
                     const music = JSON.parse(musicSettings);
@@ -2534,41 +2896,41 @@
                     if (music.artist) CONFIG.music.artist = music.artist;
                     if (music.url) CONFIG.music.url = music.url;
                 }
-                
+
                 const timelineSettings = localStorage.getItem('lovesite_timeline');
                 if (timelineSettings) {
                     CONFIG.timeline = JSON.parse(timelineSettings);
                 }
-                
+
                 const messageSettings = localStorage.getItem('lovesite_message');
                 if (messageSettings) {
                     CONFIG.message = JSON.parse(messageSettings);
                 }
-                
+
                 // 加载主题设置
                 const themeSettings = localStorage.getItem('lovesite_theme');
                 if (themeSettings) {
                     CONFIG.theme = JSON.parse(themeSettings);
                 }
-                
+
                 // 加载心愿清单
                 const wishlistSettings = localStorage.getItem('lovesite_wishlist');
                 if (wishlistSettings) {
                     CONFIG.wishlist = JSON.parse(wishlistSettings);
                 }
-                
+
                 // 加载特效设置
                 const effectSettings = localStorage.getItem('lovesite_effects');
                 if (effectSettings) {
                     CONFIG.effects = JSON.parse(effectSettings);
                 }
-                
+
                 // 加载甜蜜话语
                 const sweetwordsSettings = localStorage.getItem('lovesite_sweetwords');
                 if (sweetwordsSettings) {
                     CONFIG.sweetwords = JSON.parse(sweetwordsSettings);
                 }
-                
+
                 // 加载页脚设置
                 const footerSettings = localStorage.getItem('lovesite_footer');
                 if (footerSettings) {
@@ -2579,6 +2941,10 @@
                 const broadcastSettings = localStorage.getItem('lovesite_broadcast');
                 if (broadcastSettings) {
                     CONFIG.broadcast = JSON.parse(broadcastSettings);
+                }
+                const eggSettings = localStorage.getItem('lovesite_easter_egg');
+                if (eggSettings) {
+                    CONFIG.easterEgg = JSON.parse(eggSettings);
                 }
             } catch (e) {
                 console.log('加载设置失败，使用默认配置');
@@ -2652,12 +3018,16 @@
                     CONFIG.broadcast = cloud.broadcast;
                     localStorage.setItem('lovesite_broadcast', JSON.stringify(cloud.broadcast));
                 }
+                if (cloud.easterEgg) {
+                    CONFIG.easterEgg = cloud.easterEgg;
+                    localStorage.setItem('lovesite_easter_egg', JSON.stringify(cloud.easterEgg));
+                }
             } catch (e) {
                 console.log('应用云端配置失败');
             }
         }
 
-        
+
         function applySettings() {
             // 应用标题
             const heroTitle = document.querySelector('.hero h1');
@@ -2665,18 +3035,18 @@
             if (heroTitle) heroTitle.textContent = CONFIG.siteTitle;
             if (heroSubtitle) heroSubtitle.textContent = CONFIG.siteSubtitle;
             document.title = CONFIG.siteTitle;
-            
+
             // 应用音乐
             const musicTitle = document.querySelector('.music-title');
             const musicArtist = document.querySelector('.music-artist');
             if (musicTitle) musicTitle.textContent = CONFIG.music.title;
             if (musicArtist) musicArtist.textContent = CONFIG.music.artist;
-            
+
             const bgMusic = document.getElementById('bgMusic');
             if (bgMusic && CONFIG.music.url) {
                 bgMusic.src = CONFIG.music.url;
             }
-            
+
             // 应用心语
             const messageContent = document.querySelector('.message-content');
             const messageSignature = document.querySelector('.message-signature');
@@ -2686,7 +3056,7 @@
             if (messageSignature) {
                 messageSignature.textContent = CONFIG.message.signature;
             }
-            
+
             // 应用主题颜色
             if (CONFIG.theme) {
                 document.documentElement.style.setProperty('--primary-pink', CONFIG.theme.primary || '#e8a4b8');
@@ -2694,7 +3064,7 @@
                 document.documentElement.style.setProperty('--warm-cream', CONFIG.theme.bg || '#faf6f2');
                 document.documentElement.style.setProperty('--text-dark', CONFIG.theme.text || '#4a3f44');
             }
-            
+
             // 应用页脚
             applyFooterAndNav();
 
@@ -2704,6 +3074,7 @@
 
             // 应用小小广播站（只显示当前最适合的一条）
             renderBroadcastFromConfig();
+            EasterEgg.init(CONFIG.easterEgg);
 
             // 应用心愿清单
             if (CONFIG.wishlist && CONFIG.wishlist.enabled) {
@@ -2876,24 +3247,24 @@
 
             card.style.display = 'block';
         }
-        
+
         // ============ 心愿清单 ============
         function renderWishlist() {
             const section = document.getElementById('wishlist');
             const container = document.getElementById('wishlistContainer');
             if (!section || !container || !CONFIG.wishlist) return;
-            
+
             if (CONFIG.wishlist.enabled && CONFIG.wishlist.items && CONFIG.wishlist.items.length > 0) {
                 section.style.display = 'block';
-                
+
                 const completed = CONFIG.wishlist.items.filter(i => i.completed).length;
                 const total = CONFIG.wishlist.items.length;
                 const percent = total > 0 ? (completed / total * 100) : 0;
-                
+
                 document.getElementById('wishCompleted').textContent = completed;
                 document.getElementById('wishTotal').textContent = total;
                 document.getElementById('wishProgressFill').style.width = percent + '%';
-                
+
                 container.innerHTML = CONFIG.wishlist.items.map(item => `
                     <div class="wish-item">
                         <div class="wish-checkbox ${item.completed ? 'checked' : ''}"></div>
@@ -2902,15 +3273,15 @@
                 `).join('');
             }
         }
-        
+
         // ============ 甜蜜话语弹窗 ============
         function showSweetPopup() {
             if (!CONFIG.sweetwords || !CONFIG.sweetwords.enabled) return;
-            
+
             const freq = CONFIG.sweetwords.frequency || 'always';
             const today = new Date().toDateString();
             const lastShown = localStorage.getItem('sweetword_lastshown');
-            
+
             let shouldShow = false;
             if (freq === 'always') {
                 shouldShow = true;
@@ -2919,44 +3290,44 @@
             } else if (freq === 'random' && Math.random() < 0.3) {
                 shouldShow = true;
             }
-            
+
             if (shouldShow && CONFIG.sweetwords.messages && CONFIG.sweetwords.messages.length > 0) {
                 const randomMsg = CONFIG.sweetwords.messages[Math.floor(Math.random() * CONFIG.sweetwords.messages.length)];
                 document.getElementById('sweetPopupText').textContent = randomMsg;
-                
+
                 setTimeout(() => {
                     document.getElementById('sweetPopup').classList.add('show');
                     localStorage.setItem('sweetword_lastshown', today);
                 }, 2000);
             }
         }
-        
+
         function closeSweetPopup() {
             document.getElementById('sweetPopup').classList.remove('show');
         }
-        
+
         // ============ 烟花特效 ============
         function createFirework(x, y) {
             const container = document.getElementById('fireworkContainer');
             const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd'];
-            
+
             for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
+
                 const angle = (Math.PI * 2 / 30) * i;
                 const velocity = 50 + Math.random() * 100;
                 particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
                 particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
-                
+
                 container.appendChild(particle);
                 setTimeout(() => particle.remove(), 1500);
             }
         }
-        
+
         function launchFireworks() {
             const count = 5;
             for (let i = 0; i < count; i++) {
@@ -2967,21 +3338,21 @@
                 }, i * 500);
             }
         }
-        
+
         function checkAnniversary() {
             if (!CONFIG.effects || !CONFIG.effects.firework) return;
-            
+
             const today = new Date();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             const todayStr = `${month}-${day}`;
-            
+
             const dates = (CONFIG.effects.fireworkDates || '').split(',').map(d => d.trim());
-            
+
             if (dates.includes(todayStr)) {
                 document.getElementById('anniversaryBanner').classList.add('show');
                 launchFireworks();
-                
+
                 // 每隔几秒放一次烟花
                 setInterval(launchFireworks, 8000);
             }
@@ -2991,15 +3362,15 @@
         let typewriterIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
-        
+
         function startTypewriter() {
             const element = document.getElementById('typewriter');
             if (!element) return;
-            
+
             function type() {
                 const texts = CONFIG.typewriterTexts;
                 const currentText = texts[typewriterIndex];
-                
+
                 if (isDeleting) {
                     element.textContent = currentText.substring(0, charIndex - 1);
                     charIndex--;
@@ -3007,9 +3378,9 @@
                     element.textContent = currentText.substring(0, charIndex + 1);
                     charIndex++;
                 }
-                
+
                 let typeSpeed = isDeleting ? 50 : 100;
-                
+
                 if (!isDeleting && charIndex === currentText.length) {
                     typeSpeed = 2000;
                     isDeleting = true;
@@ -3018,10 +3389,10 @@
                     typewriterIndex = (typewriterIndex + 1) % texts.length;
                     typeSpeed = 500;
                 }
-                
+
                 setTimeout(type, typeSpeed);
             }
-            
+
             setTimeout(type, 1000);
         }
 
@@ -3031,23 +3402,23 @@
                 const now = new Date();
                 const startDate = new Date(CONFIG.loveDate);
                 const diff = now - startDate;
-                
+
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                
+
                 const daysEl = document.getElementById('daysCount');
                 const hoursEl = document.getElementById('hoursCount');
                 const minutesEl = document.getElementById('minutesCount');
                 const secondsEl = document.getElementById('secondsCount');
-                
+
                 if (daysEl) daysEl.textContent = Math.max(0, days);
                 if (hoursEl) hoursEl.textContent = Math.max(0, hours);
                 if (minutesEl) minutesEl.textContent = Math.max(0, minutes);
                 if (secondsEl) secondsEl.textContent = Math.max(0, seconds);
             }
-            
+
             update();
             setInterval(update, 1000);
         }
@@ -3056,9 +3427,9 @@
         function startPetalEffect() {
             const container = document.getElementById('petalContainer');
             if (!container) return;
-            
+
             const petalTypes = ['🌸', '💕', '✿', '❀', '♡'];
-            
+
             function createPetal() {
                 const petal = document.createElement('div');
                 petal.className = 'petal';
@@ -3066,12 +3437,12 @@
                 petal.style.left = Math.random() * 100 + 'vw';
                 petal.style.animationDuration = (Math.random() * 5 + 8) + 's';
                 petal.style.animationDelay = Math.random() * 2 + 's';
-                
+
                 container.appendChild(petal);
-                
+
                 setTimeout(() => petal.remove(), 15000);
             }
-            
+
             setInterval(createPetal, 800);
             for (let i = 0; i < 10; i++) {
                 setTimeout(createPetal, i * 200);
@@ -3081,19 +3452,19 @@
         // ============ 鼠标跟随星光 ============
         function startSparkleEffect() {
             let lastTime = 0;
-            
+
             document.addEventListener('mousemove', (e) => {
                 const now = Date.now();
                 if (now - lastTime < 50) return;
                 lastTime = now;
-                
+
                 const sparkle = document.createElement('div');
                 sparkle.className = 'cursor-sparkle';
                 sparkle.innerHTML = ['✦', '✧', '★', '☆', '✴', '❋'][Math.floor(Math.random() * 6)];
                 sparkle.style.left = e.clientX + 'px';
                 sparkle.style.top = e.clientY + 'px';
                 sparkle.style.fontSize = (Math.random() * 8 + 8) + 'px';
-                
+
                 document.body.appendChild(sparkle);
                 setTimeout(() => sparkle.remove(), 1000);
             });
@@ -3102,42 +3473,42 @@
         // ============ 照片轮播 ============
         let currentPhoto = 0;
         let autoSlideInterval;
-        
+
         function showPhoto(index) {
             const photos = document.querySelectorAll('.photo');
             const dots = document.querySelectorAll('.slider-dot');
             const thumbnails = document.querySelectorAll('.thumbnail');
             const caption = document.getElementById('photoCaption');
-            
+
             if (photos.length === 0) return;
-            
+
             photos.forEach(p => p.classList.remove('active'));
             dots.forEach(d => d.classList.remove('active'));
             thumbnails.forEach(t => t.classList.remove('active'));
-            
+
             currentPhoto = index;
             if (currentPhoto >= photos.length) currentPhoto = 0;
             if (currentPhoto < 0) currentPhoto = photos.length - 1;
-            
+
             if (photos[currentPhoto]) photos[currentPhoto].classList.add('active');
             if (dots[currentPhoto]) dots[currentPhoto].classList.add('active');
             if (thumbnails[currentPhoto]) thumbnails[currentPhoto].classList.add('active');
-            
+
             if (caption && CONFIG.photos[currentPhoto]) {
                 caption.textContent = CONFIG.photos[currentPhoto].caption;
             }
-            
+
             resetAutoSlide();
         }
-        
+
         function nextPhoto() { showPhoto(currentPhoto + 1); }
         function prevPhoto() { showPhoto(currentPhoto - 1); }
-        
+
         function resetAutoSlide() {
             clearInterval(autoSlideInterval);
             autoSlideInterval = setInterval(nextPhoto, 5000);
         }
-        
+
         function startAutoSlide() {
             autoSlideInterval = setInterval(nextPhoto, 5000);
         }
@@ -3145,12 +3516,12 @@
         // ============ 音乐控制 ============
         let isPlaying = false;
         let isMuted = false;
-        
+
         function toggleMusic() {
             const bgMusic = document.getElementById('bgMusic');
             const playIcon = document.getElementById('playIcon');
             const vinylDisc = document.getElementById('vinylDisc');
-            
+
             if (isPlaying) {
                 bgMusic.pause();
                 playIcon.textContent = '▶';
@@ -3162,10 +3533,10 @@
             }
             isPlaying = !isPlaying;
         }
-        
+
         function prevSong() { document.getElementById('bgMusic').currentTime = 0; }
         function nextSong() { document.getElementById('bgMusic').currentTime = 0; }
-        
+
         function seekMusic(e) {
             const bar = document.getElementById('progressBar');
             const music = document.getElementById('bgMusic');
@@ -3173,13 +3544,13 @@
             const pos = (e.clientX - rect.left) / rect.width;
             music.currentTime = pos * music.duration;
         }
-        
+
         function changeVolume(value) {
             const music = document.getElementById('bgMusic');
             music.volume = value / 100;
             updateVolumeIcon(value);
         }
-        
+
         function toggleMute() {
             const music = document.getElementById('bgMusic');
             const icon = document.getElementById('volumeIcon');
@@ -3187,7 +3558,7 @@
             music.muted = isMuted;
             icon.textContent = isMuted ? '🔇' : '🔊';
         }
-        
+
         function updateVolumeIcon(value) {
             const icon = document.getElementById('volumeIcon');
             if (value == 0) icon.textContent = '🔇';
@@ -3196,18 +3567,18 @@
         }
 
         // 进度条更新
-        document.getElementById('bgMusic')?.addEventListener('timeupdate', function() {
+        document.getElementById('bgMusic')?.addEventListener('timeupdate', function () {
             if (this.duration) {
                 const progress = (this.currentTime / this.duration) * 100;
                 document.getElementById('progressFill').style.width = progress + '%';
                 document.getElementById('currentTime').textContent = formatTime(this.currentTime);
             }
         });
-        
-        document.getElementById('bgMusic')?.addEventListener('loadedmetadata', function() {
+
+        document.getElementById('bgMusic')?.addEventListener('loadedmetadata', function () {
             document.getElementById('totalTime').textContent = formatTime(this.duration);
         });
-        
+
         function formatTime(seconds) {
             if (isNaN(seconds)) return '0:00';
             const mins = Math.floor(seconds / 60);
@@ -3219,21 +3590,21 @@
         function initScrollEffects() {
             const navbar = document.getElementById('navbar');
             const backToTop = document.getElementById('backToTop');
-            
+
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) {
                     navbar?.classList.add('scrolled');
                 } else {
                     navbar?.classList.remove('scrolled');
                 }
-                
+
                 if (window.scrollY > 500) {
                     backToTop?.classList.add('visible');
                 } else {
                     backToTop?.classList.remove('visible');
                 }
             });
-            
+
             // 滚动动画
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -3242,27 +3613,27 @@
                     }
                 });
             }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-            
+
             document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-            
+
             // 平滑滚动
             document.querySelectorAll('nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
+                anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     const target = document.querySelector(this.getAttribute('href'));
                     target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
             });
-            
+
             // 移动端菜单
             const mobileBtn = document.getElementById('mobileMenuBtn');
             const navMenu = document.getElementById('navMenu');
-            
+
             mobileBtn?.addEventListener('click', () => {
                 mobileBtn.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
-            
+
             document.querySelectorAll('nav a').forEach(link => {
                 link.addEventListener('click', () => {
                     mobileBtn?.classList.remove('active');
@@ -3270,14 +3641,141 @@
                 });
             });
         }
-        
+
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        // ============ EasterEgg（通用彩蛋）===========
+        const EasterEgg = (() => {
+            const LS_KEY = 'easteregg_stickers_state_v1';
+
+            const toDateOnly = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            const parseDate = (str) => {
+                if (!str) return null;
+                const d = new Date(str);
+                if (isNaN(d.getTime())) return null;
+                return toDateOnly(d);
+            };
+            const inRange = (today, start, end) => {
+                if (start && today < start) return false;
+                if (end && today > end) return false;
+                return true;
+            };
+
+            const todayKey = () => {
+                const d = new Date();
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            };
+
+            const loadState = () => {
+                try {
+                    const raw = localStorage.getItem(LS_KEY);
+                    if (!raw) return { day: todayKey(), done: {} };
+                    const s = JSON.parse(raw);
+                    if (s.day !== todayKey()) return { day: todayKey(), done: {} };
+                    return s;
+                } catch {
+                    return { day: todayKey(), done: {} };
+                }
+            };
+
+            const saveState = (s) => localStorage.setItem(LS_KEY, JSON.stringify(s));
+
+            const pickCheer = (cfg) => {
+                const list = Array.isArray(cfg.cheerMessages) && cfg.cheerMessages.length
+                    ? cfg.cheerMessages
+                    : ['你已经很努力了。\n我一直在你身边。'];
+                return list[Math.floor(Math.random() * list.length)];
+            };
+
+            const renderStickers = (cfg) => {
+                const wrap = document.getElementById('eggStickers');
+                if (!wrap) return;
+                const state = loadState();
+                const items = Array.isArray(cfg.stickers) && cfg.stickers.length ? cfg.stickers : [];
+
+                wrap.innerHTML = items.map(it => {
+                    const done = !!state.done[it.id];
+                    return `<div class="finals-sticker ${done ? 'done' : ''}" data-id="${it.id}">${done ? '✓ ' : ''}${it.text}</div>`;
+                }).join('');
+
+                wrap.querySelectorAll('.finals-sticker').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const id = el.getAttribute('data-id');
+                        const s = loadState();
+                        s.done[id] = !s.done[id];
+                        saveState(s);
+                        renderStickers(cfg);
+                    });
+                });
+            };
+
+            const showNightTip = (cfg) => {
+                const tip = document.getElementById('eggNightTip');
+                if (!tip) return;
+
+                const hour = new Date().getHours();
+                const enabled = cfg.nightTipEnabled !== false;
+                const inNight = (hour >= 23 || hour <= 2);
+
+                if (enabled && inNight) {
+                    tip.textContent = cfg.nightTipText || '该休息啦，明天也会继续为你加油。';
+                    tip.style.display = 'block';
+                    setTimeout(() => { tip.style.display = 'none'; }, 6000);
+                } else {
+                    tip.style.display = 'none';
+                }
+            };
+
+            const showModal = (cfg) => {
+                const modal = document.getElementById('eggModal');
+                const titleEl = document.getElementById('eggModalTitle');
+                const contentEl = document.getElementById('eggModalContent');
+
+                if (titleEl) titleEl.textContent = cfg.cheerTitle || '你真的很棒';
+                if (contentEl) contentEl.textContent = pickCheer(cfg);
+
+                renderStickers(cfg);
+                modal?.classList.add('show');
+            };
+
+            const hideModal = () => document.getElementById('eggModal')?.classList.remove('show');
+
+            function init(cfg) {
+                if (!cfg || cfg.enabled === false) return;
+
+                const today = toDateOnly(new Date());
+                const start = parseDate(cfg.startDate);
+                const end = parseDate(cfg.endDate);
+
+                if (!inRange(today, start, end)) return;
+
+                const badge = document.getElementById('eggBadge');
+                if (badge) {
+                    badge.textContent = cfg.badgeText || '✨ 彩蛋';
+                    badge.style.display = 'block';
+                    badge.addEventListener('click', () => showModal(cfg));
+                }
+
+                document.getElementById('eggModalClose')?.addEventListener('click', hideModal);
+                document.getElementById('eggModalCheer')?.addEventListener('click', () => {
+                    const contentEl = document.getElementById('eggModalContent');
+                    if (contentEl) contentEl.textContent = pickCheer(cfg);
+                });
+
+                document.getElementById('eggModal')?.addEventListener('click', (e) => {
+                    if (e.target && e.target.id === 'eggModal') hideModal();
+                });
+
+                showNightTip(cfg);
+            }
+
+            return { init };
+        })();
 
         // ============ 控制台彩蛋 ============
         console.log('%c💕 送给我的最爱 💕', 'color: #e8a4b8; font-size: 20px; font-weight: bold;');
     </script>
 </body>
-</html>
 
+</html>
