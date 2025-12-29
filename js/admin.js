@@ -236,50 +236,47 @@ function addPhotoUrl() {
     }
 }
 
+// 统一的 Vercel Blob 客户端直传（绕过 Function 4.5MB 限制）
+async function vercelBlobUpload(file, clientPayload) {
+    // 动态加载 Vercel Blob Client（避免把 admin.js 变成 module）
+    const mod = await import('https://esm.sh/@vercel/blob@0.27.0/client');
+    const upload = mod.upload;
+
+    const token = getAdminToken();
+    if (!token) throw new Error('未设置管理员口令');
+
+    return await upload(file.name, file, {
+        access: 'public',
+        handleUploadUrl: '/api/upload',
+        clientPayload, // 后端用它区分 image/music
+        // ⚠️ 额外把管理员口令发给后端鉴权（会进 handleUpload 的 body 里）
+        // 注意：这是站点管理员口令，本来就只在你设备本地保存。
+        // 生产更安全可换成会话/登录。
+        multipart: true,
+        token,
+    });
+}
+
 async function uploadLocalPhotos(input) {
     const files = input.files;
     if (!files || files.length === 0) return;
 
     const token = getAdminToken();
     if (!token) {
-        showToast('请先在顶部设置"管理员口令"，否则无法上传到云端', 'error');
+        showToast('请先在顶部设置"管理员口令"', 'error');
         input.value = '';
         return;
     }
 
+    showToast(`准备上传 ${files.length} 张图片...`);
+
     for (let file of files) {
         try {
-            const dataUrl = await new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-
-            const res = await fetch('/api/upload/image', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-admin-token': token
-                },
-                body: JSON.stringify({
-                    filename: file.name,
-                    contentType: file.type,
-                    dataUrl
-                })
-            });
-
-            if (!res.ok) {
-                const t = await res.text();
-                throw new Error(t);
-            }
-
-            const out = await res.json();
+            const blob = await vercelBlobUpload(file, 'image');
             photos.push({
-                url: out.url,
+                url: blob.url,
                 caption: file.name.replace(/\.[^/.]+$/, '')
             });
-
             renderPhotos();
         } catch (e) {
             showToast('上传失败：' + (e?.message || e), 'error');
@@ -287,7 +284,7 @@ async function uploadLocalPhotos(input) {
     }
 
     input.value = '';
-    showToast('图片已上传到云端，请点击"保存相册"同步配置');
+    showToast('图片上传完成，请点击“保存相册”同步配置');
 }
 
 function removePhoto(index) {
