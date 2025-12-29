@@ -1,1 +1,2192 @@
+:root {
+    --primary-pink: #e8a4b8;
+    --secondary-pink: #f5d0d8;
+    --accent-rose: #d4a5a5;
+    --warm-cream: #faf6f2;
+    --soft-purple: #c9b8d0;
+    --text-dark: #4a3f44;
+    --text-light: #6b5b5f;
+    --gold-accent: #d4af37;
+    --deep-rose: #c77d8e;
+}
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Noto Serif SC', serif;
+    background: var(--warm-cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    line-height: 1.8;
+    cursor: default;
+}
+
+/* ============ 密码保护界面 ============ */
+.password-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #faf6f2 0%, #f5d0d8 50%, #e8a4b8 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.password-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.password-decoration {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.password-decoration .heart {
+    position: absolute;
+    opacity: 0.1;
+    animation: float-heart 6s ease-in-out infinite;
+}
+
+.password-decoration .heart:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    font-size: 3rem;
+    animation-delay: 0s;
+}
+
+.password-decoration .heart:nth-child(2) {
+    top: 20%;
+    right: 15%;
+    font-size: 2rem;
+    animation-delay: 1s;
+}
+
+.password-decoration .heart:nth-child(3) {
+    top: 60%;
+    left: 5%;
+    font-size: 2.5rem;
+    animation-delay: 2s;
+}
+
+.password-decoration .heart:nth-child(4) {
+    top: 70%;
+    right: 10%;
+    font-size: 1.8rem;
+    animation-delay: 3s;
+}
+
+.password-decoration .heart:nth-child(5) {
+    top: 40%;
+    left: 80%;
+    font-size: 2.2rem;
+    animation-delay: 4s;
+}
+
+.password-decoration .heart:nth-child(6) {
+    top: 85%;
+    left: 50%;
+    font-size: 2rem;
+    animation-delay: 5s;
+}
+
+@keyframes float-heart {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+    }
+}
+
+.password-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 3rem 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 380px;
+    width: 90%;
+    position: relative;
+    animation: card-appear 0.8s ease;
+}
+
+@keyframes card-appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.password-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-pink), var(--soft-purple), var(--primary-pink));
+    border-radius: 24px 24px 0 0;
+}
+
+.password-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(1.15);
+    }
+}
+
+.password-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.password-subtitle {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+}
+
+.password-hint {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.85rem;
+    color: var(--primary-pink);
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    background: rgba(232, 164, 184, 0.1);
+    border-radius: 8px;
+}
+
+.password-input-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.password-input {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    font-size: 1.2rem;
+    font-family: 'ZCOOL XiaoWei', serif;
+    border: 2px solid var(--secondary-pink);
+    border-radius: 12px;
+    text-align: center;
+    letter-spacing: 8px;
+    background: var(--warm-cream);
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.password-input:focus {
+    border-color: var(--primary-pink);
+    box-shadow: 0 0 0 4px rgba(232, 164, 184, 0.2);
+}
+
+.password-input.error {
+    border-color: #e57373;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-10px);
+    }
+    40%, 80% {
+        transform: translateX(10px);
+    }
+}
+
+.password-btn {
+    width: 100%;
+    padding: 1rem;
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    color: white;
+    background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(232, 164, 184, 0.4);
+}
+
+.password-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(232, 164, 184, 0.5);
+}
+
+.password-error-msg {
+    color: #e57373;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.password-error-msg.show {
+    opacity: 1;
+}
+
+/* 优雅的滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--warm-cream);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary-pink), var(--soft-purple));
+    border-radius: 10px;
+}
+
+/* 鼠标跟随星光效果 */
+.cursor-sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 12px;
+    animation: sparkle-fade 1s ease-out forwards;
+    color: var(--primary-pink);
+    text-shadow: 0 0 10px var(--primary-pink);
+}
+
+@keyframes sparkle-fade {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0) rotate(180deg);
+    }
+}
+
+/* 飘落花瓣效果 */
+.petal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.petal {
+    position: absolute;
+    top: -50px;
+    animation: fall linear forwards;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+    }
+}
+
+.petal svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--primary-pink);
+    filter: drop-shadow(0 2px 4px rgba(232, 164, 184, 0.3));
+}
+
+/* 背景装饰 */
+.bg-decoration {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    opacity: 0.08;
+    animation: floatHeart 15s ease-in-out infinite;
+}
+
+.heart-1 {
+    top: 10%;
+    left: 5%;
+    font-size: 3rem;
+    animation-delay: 0s;
+}
+
+.heart-2 {
+    top: 30%;
+    right: 8%;
+    font-size: 2rem;
+    animation-delay: 3s;
+}
+
+.heart-3 {
+    top: 60%;
+    left: 10%;
+    font-size: 2.5rem;
+    animation-delay: 6s;
+}
+
+.heart-4 {
+    top: 80%;
+    right: 15%;
+    font-size: 1.8rem;
+    animation-delay: 9s;
+}
+
+.heart-5 {
+    top: 45%;
+    left: 85%;
+    font-size: 2.2rem;
+    animation-delay: 12s;
+}
+
+@keyframes floatHeart {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translateY(-20px) rotate(5deg) scale(1.05);
+    }
+    50% {
+        transform: translateY(-10px) rotate(-3deg) scale(1);
+    }
+    75% {
+        transform: translateY(-25px) rotate(3deg) scale(1.03);
+    }
+}
+
+/* 导航栏 */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1.2rem 3rem;
+    z-index: 1000;
+    transition: all 0.4s ease;
+}
+
+nav.scrolled {
+    background: rgba(250, 246, 242, 0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: color 0.3s;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
+    transition: all 0.4s ease;
+    transform: translateX(-50%);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+nav a:hover {
+    color: var(--primary-pink);
+}
+
+/* 移动端汉堡菜单 */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.mobile-menu-btn span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: var(--text-dark);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+/* 主容器 */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* 英雄区域 */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 6rem 2rem;
+    background: linear-gradient(180deg,
+            rgba(232, 164, 184, 0.1) 0%,
+            rgba(250, 246, 242, 0) 100%);
+}
+
+.hero-decoration {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border: 1px solid rgba(232, 164, 184, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: pulse-ring 4s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.5;
+    }
+}
+
+.hero-decoration::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    right: -30px;
+    bottom: -30px;
+    border: 1px solid rgba(232, 164, 184, 0.1);
+    border-radius: 50%;
+}
+
+.hero-subtitle {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1rem;
+    letter-spacing: 8px;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.3s forwards;
+}
+
+.hero h1 {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 5rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.5s forwards;
+    position: relative;
+}
+
+.hero h1::before,
+.hero h1::after {
+    content: '♡';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: var(--primary-pink);
+    opacity: 0.6;
+    animation: heart-float 2s ease-in-out infinite;
+}
+
+.hero h1::before {
+    left: -3rem;
+    animation-delay: 0s;
+}
+
+.hero h1::after {
+    right: -3rem;
+    animation-delay: 0.5s;
+}
+
+@keyframes heart-float {
+    0%, 100% {
+        transform: translateY(-50%) scale(1);
+    }
+    50% {
+        transform: translateY(-60%) scale(1.2);
+    }
+}
+
+/* 打字机效果容器 */
+.typewriter-container {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-quote {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-style: italic;
+    max-width: 400px;
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.7s forwards;
+}
+
+.typewriter {
+    display: inline;
+    border-right: 2px solid var(--primary-pink);
+    animation: blink-cursor 0.8s step-end infinite;
+}
+
+@keyframes blink-cursor {
+    50% {
+        border-color: transparent;
+    }
+}
+
+/* 恋爱计数器 */
+.love-counter {
+    margin-top: 3rem;
+    padding: 1.5rem 3rem;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(232, 164, 184, 0.2);
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.9s forwards;
+    border: 1px solid rgba(232, 164, 184, 0.3);
+}
+
+.love-counter-title {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+}
+
+.love-counter-days {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.counter-number {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 3.5rem;
+    color: var(--deep-rose);
+    line-height: 1;
+    background: linear-gradient(135deg, var(--primary-pink), var(--deep-rose));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.counter-label {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+.counter-details {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.counter-detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.counter-detail-num {
+    font-size: 1.2rem;
+    color: var(--primary-pink);
+    font-weight: 500;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeInUp 1s ease 1.2s forwards;
+}
+
+.scroll-indicator span {
+    display: block;
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(180deg, var(--primary-pink), transparent);
+    margin: 0 auto;
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0%, 100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scaleY(0.5);
+        opacity: 0.5;
+    }
+}
+
+/* 区块标题 */
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+}
+
+.section-header h2 {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.section-header p {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    color: var(--text-light);
+}
+
+.section-header .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.section-header .divider span {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-pink));
+}
+
+.section-header .divider span:last-child {
+    background: linear-gradient(90deg, var(--primary-pink), transparent);
+}
+
+.section-header .divider::before {
+    content: '✧';
+    color: var(--primary-pink);
+    font-size: 0.8rem;
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+}
+
+/* 相册区域 */
+.gallery-section {
+    padding: 6rem 0;
+}
+
+.photo-gallery {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+}
+
+.photo-frame {
+    position: relative;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+}
+
+.photo-frame::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid rgba(232, 164, 184, 0.3);
+    border-radius: 15px;
+    pointer-events: none;
+}
+
+.photo-slider {
+    position: relative;
+    height: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.photo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    object-fit: cover;
+    transform: scale(1.05);
+}
+
+.photo.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.photo-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 3rem 2rem 2rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+    color: white;
+    text-align: center;
+    font-family: 'ZCOOL XiaoWei', serif;
+    letter-spacing: 2px;
+}
+
+.slider-controls {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.4s ease;
+    border: none;
+}
+
+.slider-dot.active {
+    background: white;
+    transform: scale(1.3);
+}
+
+.slider-arrows {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    pointer-events: none;
+}
+
+.arrow-btn {
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    font-size: 1.2rem;
+}
+
+.arrow-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+/* 照片缩略图 */
+.photo-thumbnails {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+.thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.thumbnail.active {
+    opacity: 1;
+    border-color: var(--primary-pink);
+    transform: scale(1.1);
+}
+
+.thumbnail:hover {
+    opacity: 0.8;
+}
+
+/* 音乐区域 */
+.music-section {
+    padding: 6rem 0;
+    background: linear-gradient(180deg,
+            transparent 0%,
+            rgba(232, 164, 184, 0.08) 50%,
+            transparent 100%);
+}
+
+.music-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.music-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-pink), var(--soft-purple), var(--primary-pink));
+    background-size: 200% 100%;
+    animation: gradient-flow 3s ease infinite;
+}
+
+@keyframes gradient-flow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.music-vinyl {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    position: relative;
+}
+
+.vinyl-disc {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a1a1a 0%, #333 50%, #1a1a1a 100%);
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.vinyl-disc.spinning {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.vinyl-disc::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.vinyl-disc::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #1a1a1a;
+}
+
+.vinyl-grooves {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+}
+
+.vinyl-grooves::before,
+.vinyl-grooves::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+}
+
+.vinyl-grooves::before {
+    top: 15%;
+    left: 15%;
+    right: 15%;
+    bottom: 15%;
+}
+
+.vinyl-grooves::after {
+    top: 30%;
+    left: 30%;
+    right: 30%;
+    bottom: 30%;
+}
+
+.music-info {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.music-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.music-artist {
+    font-family: 'ZCOOL XiaoWei', serif;
+    color: var(--text-light);
+    letter-spacing: 3px;
+}
+
+.music-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.play-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(232, 164, 184, 0.4);
+}
+
+.play-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 15px 40px rgba(232, 164, 184, 0.5);
+}
+
+.control-btn {
+    width: 45px;
+    height: 45px;
+    border: 1px solid var(--secondary-pink);
+    background: transparent;
+    border-radius: 50%;
+    color: var(--text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: var(--secondary-pink);
+    color: white;
+}
+
+/* 进度条 - 可拖动 */
+.progress-container {
+    margin-top: 2rem;
+    position: relative;
+}
+
+.progress-bar {
+    height: 6px;
+    background: rgba(232, 164, 184, 0.2);
+    border-radius: 3px;
+    overflow: visible;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-pink), var(--soft-purple));
+    border-radius: 3px;
+    transition: width 0.1s linear;
+    position: relative;
+}
+
+.progress-handle {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: white;
+    border: 3px solid var(--primary-pink);
+    border-radius: 50%;
+    cursor: grab;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.progress-handle:hover {
+    transform: translateY(-50%) scale(1.2);
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+/* 音量控制 */
+.volume-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+.volume-icon {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.volume-icon:hover {
+    color: var(--primary-pink);
+}
+
+.volume-slider {
+    width: 100px;
+    height: 4px;
+    -webkit-appearance: none;
+    background: rgba(232, 164, 184, 0.3);
+    border-radius: 2px;
+    outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--primary-pink);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* 时间轴区域 */
+.timeline-section {
+    padding: 6rem 0;
+}
+
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg,
+            transparent,
+            var(--primary-pink) 10%,
+            var(--primary-pink) 90%,
+            transparent);
+}
+
+.timeline-item {
+    display: flex;
+    margin: 4rem 0;
+    position: relative;
+}
+
+.timeline-item:nth-child(odd) {
+    flex-direction: row-reverse;
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+    text-align: right;
+    margin-right: 3rem;
+    margin-left: 0;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+    margin-left: 3rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 3px solid var(--primary-pink);
+    border-radius: 50%;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.timeline-item:hover .timeline-marker {
+    transform: translateX(-50%) scale(1.3);
+    background: var(--primary-pink);
+}
+
+.timeline-marker::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--primary-pink);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.timeline-item:hover .timeline-marker::before {
+    background: white;
+}
+
+.timeline-content {
+    flex: 1;
+    max-width: calc(50% - 3rem);
+}
+
+.timeline-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(232, 164, 184, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.timeline-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+.timeline-card:hover::after {
+    opacity: 1;
+}
+
+.timeline-date {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    color: var(--primary-pink);
+    margin-bottom: 0.8rem;
+}
+
+.timeline-card h3 {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    margin-bottom: 0.8rem;
+}
+
+.timeline-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.9;
+    position: relative;
+    z-index: 1;
+}
+
+/* 留言区域 */
+.message-section {
+    padding: 8rem 0;
+    background: linear-gradient(180deg,
+            transparent 0%,
+            rgba(232, 164, 184, 0.1) 50%,
+            rgba(201, 184, 208, 0.1) 100%);
+}
+
+.message-card {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+}
+
+.message-quote {
+    font-size: 4rem;
+    color: var(--primary-pink);
+    opacity: 0.3;
+    font-family: Georgia, serif;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.message-content {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    line-height: 2.2;
+    margin-bottom: 2rem;
+}
+
+.message-signature {
+    font-family: 'ZCOOL XiaoWei', serif;
+    color: var(--text-light);
+    letter-spacing: 3px;
+    font-size: 0.9rem;
+}
+
+.message-signature::before {
+    content: '—— ';
+}
+
+.heart-decoration {
+    margin-top: 3rem;
+    font-size: 2rem;
+    color: var(--primary-pink);
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* 页脚 */
+footer {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    position: relative;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
+}
+
+footer p {
+    font-family: 'ZCOOL XiaoWei', serif;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+}
+
+footer span {
+    color: var(--primary-pink);
+    animation: heartbeat 1.5s ease-in-out infinite;
+    display: inline-block;
+}
+
+.admin-link {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0.3;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.admin-link:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* 动画 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 加载动画 */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--warm-cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-heart {
+    font-size: 3rem;
+    color: var(--primary-pink);
+    animation: loading-pulse 1s ease-in-out infinite;
+}
+
+@keyframes loading-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.7;
+    }
+}
+
+.loading-text {
+    margin-top: 1rem;
+    font-family: 'ZCOOL XiaoWei', serif;
+    color: var(--text-light);
+    letter-spacing: 3px;
+    font-size: 0.9rem;
+}
+
+/* 返回顶部按钮 */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(232, 164, 184, 0.4);
+    z-index: 999;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(232, 164, 184, 0.5);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 3rem;
+    }
+
+    .hero h1::before,
+    .hero h1::after {
+        display: none;
+    }
+
+    nav {
+        padding: 1rem 1.5rem;
+    }
+
+    nav ul {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(250, 246, 242, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    nav ul.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    nav a {
+        font-size: 1.2rem;
+        letter-spacing: 3px;
+    }
+
+    .section-header h2 {
+        font-size: 2.2rem;
+    }
+
+    .photo-slider {
+        height: 300px;
+    }
+
+    .photo-thumbnails {
+        display: none;
+    }
+
+    .timeline::before {
+        left: 20px;
+    }
+
+    .timeline-item,
+    .timeline-item:nth-child(odd) {
+        flex-direction: column;
+    }
+
+    .timeline-marker {
+        left: 20px;
+    }
+
+    .timeline-content,
+    .timeline-item:nth-child(odd) .timeline-content {
+        max-width: 100%;
+        margin-left: 50px !important;
+        margin-right: 0 !important;
+        text-align: left !important;
+    }
+
+    .message-content {
+        font-size: 1.4rem;
+    }
+
+    .music-vinyl {
+        width: 150px;
+        height: 150px;
+    }
+
+    .vinyl-disc::before {
+        width: 60px;
+        height: 60px;
+    }
+
+    .love-counter {
+        padding: 1rem 1.5rem;
+    }
+
+    .counter-number {
+        font-size: 2.5rem;
+    }
+
+    .counter-details {
+        gap: 1rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .music-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .music-controls {
+        gap: 1rem;
+    }
+
+    .play-btn {
+        width: 60px;
+        height: 60px;
+    }
+
+    .control-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+
+    .password-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .password-title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+        letter-spacing: 4px;
+    }
+
+    .hero-quote {
+        font-size: 0.95rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .photo-slider {
+        height: 250px;
+    }
+
+    .timeline-card {
+        padding: 1.5rem;
+    }
+
+    .timeline-card h3 {
+        font-size: 1.4rem;
+    }
+}
+
+/* 主内容区域 - 密码验证前隐藏 */
+.main-content {
+    display: none;
+}
+
+.main-content.unlocked {
+    display: block;
+}
+
+/* ============ 小小广播站（首页） ============ */
+.broadcast-card {
+    margin-top: 2.5rem;
+    padding: 1.8rem 2rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(232, 164, 184, 0.22);
+    border: 1px solid rgba(232, 164, 184, 0.25);
+    max-width: 520px;
+    width: 100%;
+    animation: fadeInUp 0.8s ease;
+}
+
+.broadcast-tag {
+    display: inline-block;
+    padding: 0.25rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(232, 164, 184, 0.18);
+    color: var(--deep-rose);
+    font-family: 'ZCOOL XiaoWei', serif;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.broadcast-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 0.6rem;
+}
+
+.broadcast-content {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    color: var(--text-light);
+    line-height: 1.9;
+    white-space: pre-line;
+}
+
+.broadcast-countdown {
+    margin-top: 1rem;
+    font-family: 'ZCOOL XiaoWei', serif;
+    letter-spacing: 2px;
+    color: var(--primary-pink);
+    font-size: 0.95rem;
+}
+
+.broadcast-countdown span {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* ============ 心愿清单区域 ============ */
+.wishlist-section {
+    padding: 6rem 0;
+}
+
+.wishlist-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+}
+
+.wishlist-progress {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.wishlist-progress-bar {
+    height: 8px;
+    background: rgba(232, 164, 184, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.8rem;
+}
+
+.wishlist-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-pink), var(--soft-purple));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.wishlist-progress-text {
+    font-family: 'ZCOOL XiaoWei', serif;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.wish-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--warm-cream);
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.wish-item:hover {
+    background: rgba(232, 164, 184, 0.15);
+    transform: translateX(5px);
+}
+
+.wish-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--primary-pink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.wish-checkbox.checked {
+    background: var(--primary-pink);
+    border-color: var(--primary-pink);
+}
+
+.wish-checkbox.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 0.8rem;
+}
+
+.wish-text {
+    font-family: 'ZCOOL XiaoWei', serif;
+    color: var(--text-dark);
+    flex: 1;
+}
+
+.wish-text.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+/* ============ 甜蜜话语弹窗 ============ */
+.sweet-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.sweet-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sweet-popup-content {
+    background: white;
+    padding: 3rem 2.5rem;
+    border-radius: 24px;
+    max-width: 400px;
+    text-align: center;
+    transform: scale(0.8) translateY(30px);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.sweet-popup.show .sweet-popup-content {
+    transform: scale(1) translateY(0);
+}
+
+.sweet-popup-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+.sweet-popup-text {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.sweet-popup-close {
+    padding: 0.8rem 2rem;
+    background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sweet-popup-close:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(232, 164, 184, 0.4);
+}
+
+/* ============ EasterEgg（彩蛋通用 UI） ============ */
+.finals-badge {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 1200;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(232, 164, 184, 0.35);
+    backdrop-filter: blur(10px);
+    border-radius: 999px;
+    padding: 0.6rem 0.9rem;
+    font-family: 'ZCOOL XiaoWei', serif;
+    letter-spacing: 2px;
+    color: var(--text-dark);
+    box-shadow: 0 12px 30px rgba(232, 164, 184, 0.18);
+    cursor: pointer;
+    user-select: none;
+}
+
+.finals-badge:hover {
+    transform: translateY(-2px);
+}
+
+.finals-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99998;
+}
+
+.finals-modal.show {
+    display: flex;
+}
+
+.finals-modal-card {
+    width: min(420px, 92vw);
+    background: white;
+    border-radius: 22px;
+    padding: 2rem 1.6rem;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.finals-modal-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-dark);
+}
+
+.finals-modal-content {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--text-light);
+    line-height: 1.9;
+    white-space: pre-line;
+}
+
+.finals-modal-actions {
+    margin-top: 1.4rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.finals-btn {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: 'ZCOOL XiaoWei', serif;
+    letter-spacing: 2px;
+}
+
+.finals-btn-primary {
+    background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+    color: white;
+}
+
+.finals-btn-secondary {
+    background: rgba(232, 164, 184, 0.12);
+    color: var(--text-dark);
+}
+
+.finals-stickers {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+}
+
+.finals-sticker {
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(250, 246, 242, 0.95);
+    border: 1px solid rgba(232, 164, 184, 0.25);
+    font-family: 'ZCOOL XiaoWei', serif;
+    letter-spacing: 1px;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.finals-sticker.done {
+    background: rgba(127, 183, 126, 0.15);
+    border-color: rgba(127, 183, 126, 0.35);
+    color: #3d6b3d;
+}
+
+.finals-night-tip {
+    position: fixed;
+    left: 50%;
+    bottom: 80px;
+    transform: translateX(-50%);
+    z-index: 1100;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(232, 164, 184, 0.25);
+    backdrop-filter: blur(10px);
+    border-radius: 999px;
+    padding: 0.6rem 1rem;
+    font-family: 'ZCOOL XiaoWei', serif;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10);
+}
+
+/* ============ 烟花特效 ============ */
+.firework-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 99997;
+}
+
+.firework {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: firework-explode 1s ease-out forwards;
+}
+
+@keyframes firework-explode {
+    0% {
+        opacity: 1;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1) translateY(-100px);
+    }
+}
+
+.firework-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: particle-fly 1.5s ease-out forwards;
+}
+
+@keyframes particle-fly {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(0);
+    }
+}
+
+/* ============ 纪念日横幅 ============ */
+.anniversary-banner {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--primary-pink), var(--soft-purple));
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    box-shadow: 0 10px 30px rgba(232, 164, 184, 0.4);
+    z-index: 998;
+    animation: banner-bounce 0.5s ease;
+    display: none;
+}
+
+.anniversary-banner.show {
+    display: block;
+}
+
+@keyframes banner-bounce {
+    0% {
+        transform: translateX(-50%) translateY(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
