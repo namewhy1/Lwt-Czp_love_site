@@ -341,22 +341,55 @@ function loadMusicSettings() {
     }
 }
 
-function uploadLocalMusic(input) {
+async function uploadLocalMusic(input) {
     const file = input.files[0];
-    if (file) {
-        const url = URL.createObjectURL(file);
+    if (!file) return;
+
+    const token = getAdminToken();
+    if (!token) {
+        showToast('请先在顶部设置"管理员口令"，否则无法上传到云端', 'error');
+        input.value = '';
+        return;
+    }
+
+    try {
+        showToast('正在上传音乐到云端...');
+
+        const res = await fetch('/api/upload/music', {
+            method: 'POST',
+            headers: {
+                'Content-Type': file.type || 'application/octet-stream',
+                'x-admin-token': token,
+                'x-filename': file.name
+            },
+            body: file
+        });
+
+        if (!res.ok) {
+            const t = await res.text();
+            throw new Error(t);
+        }
+
+        const out = await res.json();
+        if (!out.ok && !out.url) {
+            throw new Error(out.error || '上传失败');
+        }
+
+        // 更新音乐 URL（只存 URL，避免 base64 导致 KV 超限）
+        const url = out.url || out.downloadUrl;
         document.getElementById('musicUrl').value = url;
         musicData.url = url;
         musicData.fileName = file.name;
         musicData.fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            musicData.url = e.target.result;
-            document.getElementById('musicUrl').value = '已上传: ' + file.name;
-            showCurrentMusic();
-        };
-        reader.readAsDataURL(file);
+        showCurrentMusic();
+        showToast('音乐已上传成功，请点击“保存设置”同步到云端');
+    } catch (e) {
+        console.error('uploadLocalMusic error:', e);
+        showToast('上传失败：' + (e?.message || e), 'error');
+    } finally {
+        // 清空 input，允许重复选择同一文件
+        input.value = '';
     }
 }
 
