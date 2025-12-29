@@ -803,7 +803,9 @@ nav a:hover {
 
 .photo-slider {
     position: relative;
-    height: 500px;
+    width: 100%;
+    aspect-ratio: 3 / 2; /* 自动根据宽度计算高度，保证比例 */
+    max-height: 80vh;   /* 避免在横屏手机上超出视口 */
     border-radius: 12px;
     overflow: hidden;
 }
@@ -1571,6 +1573,12 @@ footer span {
         font-size: 3rem;
     }
 
+    /* 相册窗口在手机上更合适的比例 */
+    .photo-slider {
+        aspect-ratio: 4 / 3;
+        max-height: 65vh;
+    }
+
     .hero h1::before,
     .hero h1::after {
         display: none;
@@ -1726,6 +1734,12 @@ footer span {
 @media (max-width: 480px) {
     .hero h1 {
         font-size: 2.5rem;
+    }
+
+    /* 超小屏：窗口再更“方”一些，避免太矮 */
+    .photo-slider {
+        aspect-ratio: 1 / 1;
+        max-height: 60vh;
     }
 
     .hero-subtitle {
