@@ -772,19 +772,21 @@ nav a:hover {
 
 /* 相册区域 */
 .gallery-section {
-    padding: 6rem 0;
+    padding: 4rem 0; /* 减小整个相册区域的上下间距 */
 }
 
 .photo-gallery {
     position: relative;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.08);
+    max-width: 900px; /* 缩小相册整体在页面中的占比 */
+    margin: 0 auto;
 }
 
 .photo-frame {
     position: relative;
-    padding: 20px;
+    padding: 10px; /* 减小内边距，让相框更紧凑 */
     background: white;
     border-radius: 20px;
 }
@@ -792,10 +794,10 @@ nav a:hover {
 .photo-frame::before {
     content: '';
     position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
     border: 1px solid rgba(232, 164, 184, 0.3);
     border-radius: 15px;
     pointer-events: none;
@@ -804,10 +806,11 @@ nav a:hover {
 .photo-slider {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 2; /* 自动根据宽度计算高度，保证比例 */
-    max-height: 80vh;   /* 避免在横屏手机上超出视口 */
+    aspect-ratio: 5/6; /* 桌面端更高一点 */
+    max-height: 100vh;   /* 降低照片高度占比 */
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.10);
 }
 
 .photo {
@@ -903,13 +906,17 @@ nav a:hover {
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 0 20px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap;
 }
 
 .thumbnail {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 8px;
     object-fit: cover;
     cursor: pointer;
