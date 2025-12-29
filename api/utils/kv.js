@@ -30,7 +30,6 @@ export async function getConfig() {
     try {
       return JSON.parse(raw);
     } catch {
-      // 兼容：如果历史数据不是 JSON，就当作无配置
       return null;
     }
   }
@@ -42,14 +41,17 @@ export async function saveConfig(configObj) {
   const kvUrl = mustEnv('KV_REST_API_URL');
   const kvToken = mustEnv('KV_REST_API_TOKEN');
 
-  const kvRes = await fetch(`${kvUrl}/set/${encodeURIComponent(KEY)}`, {
+  // ✅ Upstash REST /set 的正确用法：body 必须是 JSON 数组 [key, value]
+  // value 我们统一存储为 JSON 字符串，读取时再 JSON.parse
+  const payload = [KEY, JSON.stringify(configObj)];
+
+  const kvRes = await fetch(`${kvUrl}/set`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${kvToken}`,
       'Content-Type': 'application/json',
     },
-    // Upstash REST /set 这里保持历史兼容：value 存 JSON 字符串
-    body: JSON.stringify(JSON.stringify(configObj)),
+    body: JSON.stringify(payload),
   });
 
   if (!kvRes.ok) {
@@ -59,5 +61,3 @@ export async function saveConfig(configObj) {
 
   return true;
 }
-
-
