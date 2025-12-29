@@ -1102,4 +1102,3 @@ document.addEventListener('DOMContentLoaded', () => {
     loadFooterSettings();
     updateStats();
 });
-
