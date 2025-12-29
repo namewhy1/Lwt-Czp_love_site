@@ -249,11 +249,12 @@ async function vercelBlobUpload(file, clientPayload) {
         access: 'public',
         handleUploadUrl: '/api/upload',
         clientPayload, // 后端用它区分 image/music
-        // ⚠️ 额外把管理员口令发给后端鉴权（会进 handleUpload 的 body 里）
-        // 注意：这是站点管理员口令，本来就只在你设备本地保存。
-        // 生产更安全可换成会话/登录。
-        multipart: true,
-        token,
+        // ✅ 修复：必须把 token 放到 handleUploadUrl 的请求头里，后端才能鉴权
+        fetchOptions: {
+            headers: {
+                'x-admin-token': token,
+            }
+        }
     });
 }
 
