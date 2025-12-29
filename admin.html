@@ -963,6 +963,11 @@
                 <span>心愿清单</span>
                 <span class="badge">新</span>
             </li>
+            <li class="nav-item" data-panel="easterEgg">
+                <span>✨</span>
+                <span>彩蛋设置</span>
+                <span class="badge">新</span>
+            </li>
             <li class="nav-item" data-panel="effects">
                 <span>✨</span>
                 <span>特效设置</span>
@@ -1423,6 +1428,87 @@
             </div>
         </div>
 
+        <!-- 彩蛋设置面板（通用） -->
+        <div class="panel" id="panel-easterEgg">
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">✨</div>
+                    彩蛋设置（通用）
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">按日期范围自动启用；页面右下角出现徽章，点击才弹出鼓励（不会打扰）。</p>
+
+                <div class="form-group">
+                    <div class="toggle-wrapper">
+                        <span>启用彩蛋</span>
+                        <div class="toggle active" id="eggToggle" onclick="toggleEggEnabled()"></div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>开始日期（可不填）</label>
+                        <input type="date" id="eggStartDate">
+                        <p class="form-hint">不填表示从现在起都可以</p>
+                    </div>
+                    <div class="form-group">
+                        <label>结束日期（可不填）</label>
+                        <input type="date" id="eggEndDate">
+                        <p class="form-hint">不填表示一直有效</p>
+                    </div>
+                    <div class="form-group">
+                        <label>徽章文字</label>
+                        <input type="text" id="eggBadgeText" placeholder="📚 期末周加油">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>弹窗标题</label>
+                        <input type="text" id="eggCheerTitle" placeholder="你真的很棒">
+                    </div>
+                    <div class="form-group">
+                        <label>夜间轻提示（23:00-02:00）</label>
+                        <div class="toggle-wrapper" style="margin-top: 0.4rem;">
+                            <span>启用</span>
+                            <div class="toggle active" id="eggNightToggle" onclick="toggleEggNight()"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>夜间提示文案</label>
+                    <input type="text" id="eggNightText" placeholder="该休息啦，明天也会继续为你加油。">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">💬</div>
+                    鼓励文案（随机）
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">点击徽章弹窗后，“再来一句”会随机显示。</p>
+                <div id="eggCheerList"></div>
+                <button class="btn btn-secondary" onclick="addEggCheer()">➕ 添加一句</button>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">
+                    <div class="icon">✅</div>
+                    今日小成就贴纸
+                </h3>
+                <p class="form-hint" style="margin-bottom: 1rem;">贴纸只在她的设备本地记录，每天会自动重置，不会上传云端。</p>
+                <div id="eggStickerList"></div>
+                <button class="btn btn-secondary" onclick="addEggSticker()">➕ 添加贴纸</button>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="saveEggSettings()">
+                    <span>💾</span>
+                    保存彩蛋
+                </button>
+            </div>
+        </div>
+
         <!-- 特效设置面板 -->
         <div class="panel" id="panel-effects">
             <div class="card">
@@ -1649,6 +1735,7 @@
             'message': '💌 心语留言',
             'broadcast': '📣 小小广播站',
             'wishlist': '⭐ 心愿清单',
+            'easterEgg': '✨ 彩蛋设置',
             'effects': '✨ 特效设置',
             'sweetwords': '💬 甜蜜话语',
             'footer': '📝 页脚设置',
@@ -1729,6 +1816,7 @@
                 timeline: JSON.parse(localStorage.getItem('lovesite_timeline') || 'null'),
                 message: JSON.parse(localStorage.getItem('lovesite_message') || 'null'),
                 broadcast: JSON.parse(localStorage.getItem('lovesite_broadcast') || 'null'),
+                easterEgg: JSON.parse(localStorage.getItem('lovesite_easter_egg') || 'null'),
                 wishlist: JSON.parse(localStorage.getItem('lovesite_wishlist') || 'null'),
                 effects: JSON.parse(localStorage.getItem('lovesite_effects') || 'null'),
                 sweetwords: JSON.parse(localStorage.getItem('lovesite_sweetwords') || 'null'),
@@ -2402,6 +2490,122 @@
             renderWishItems();
         }
 
+        // ============ 彩蛋设置 (通用) ============
+        let easterEggConfig = {
+            enabled: true,
+            startDate: '',
+            endDate: '',
+            badgeText: '📚 期末周加油',
+            cheerTitle: '你真的很棒',
+            cheerMessages: [
+                '不管考得怎样，你已经很努力了。\n我一直在你身边。',
+                '慢慢来，一步一步就会到终点。\n抱抱。',
+                '累了就休息一下，喝口水也很棒。\n我为你骄傲。'
+            ],
+            stickers: [
+                { id: 'study', text: '我今天复习了' },
+                { id: 'eat', text: '我今天好好吃饭了' },
+                { id: 'sleep', text: '我今天早点睡' }
+            ],
+            nightTipEnabled: true,
+            nightTipText: '该休息啦，明天也会继续为你加油。'
+        };
+
+        function toggleEggEnabled() {
+            easterEggConfig.enabled = !easterEggConfig.enabled;
+            document.getElementById('eggToggle')?.classList.toggle('active', easterEggConfig.enabled);
+        }
+
+        function toggleEggNight() {
+            easterEggConfig.nightTipEnabled = !easterEggConfig.nightTipEnabled;
+            document.getElementById('eggNightToggle')?.classList.toggle('active', easterEggConfig.nightTipEnabled);
+        }
+
+        function renderEggCheerList() {
+            const container = document.getElementById('eggCheerList');
+            if (!container) return;
+            container.innerHTML = easterEggConfig.cheerMessages.map((text, index) => `
+                <div class="text-list-item">
+                    <input type="text" value="${escapeHtml(text)}" onchange="easterEggConfig.cheerMessages[${index}] = this.value">
+                    <button class="remove-text-btn" onclick="removeEggCheer(${index})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function addEggCheer() {
+            easterEggConfig.cheerMessages.push('新的一句鼓励...');
+            renderEggCheerList();
+        }
+
+        function removeEggCheer(index) {
+            if (easterEggConfig.cheerMessages.length > 1) {
+                easterEggConfig.cheerMessages.splice(index, 1);
+                renderEggCheerList();
+            }
+        }
+
+        function renderEggStickerList() {
+            const container = document.getElementById('eggStickerList');
+            if (!container) return;
+            container.innerHTML = easterEggConfig.stickers.map((item, index) => `
+                <div class="text-list-item">
+                    <input type="text" value="${escapeHtml(item.text)}" onchange="easterEggConfig.stickers[${index}].text = this.value" placeholder="贴纸文字">
+                    <button class="remove-text-btn" onclick="removeEggSticker(${index})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function addEggSticker() {
+            if (easterEggConfig.stickers.length < 5) { // Limit stickers for UI reasons
+                easterEggConfig.stickers.push({ id: `custom_${Date.now()}`, text: '新的小成就' });
+                renderEggStickerList();
+            } else {
+                showToast('最多添加5个贴纸哦', 'warning');
+            }
+        }
+
+        function removeEggSticker(index) {
+            if (easterEggConfig.stickers.length > 1) {
+                easterEggConfig.stickers.splice(index, 1);
+                renderEggStickerList();
+            }
+        }
+
+        function saveEggSettings() {
+            // Collect data from inputs
+            easterEggConfig.startDate = document.getElementById('eggStartDate').value;
+            easterEggConfig.endDate = document.getElementById('eggEndDate').value;
+            easterEggConfig.badgeText = document.getElementById('eggBadgeText').value;
+            easterEggConfig.cheerTitle = document.getElementById('eggCheerTitle').value;
+            easterEggConfig.nightTipText = document.getElementById('eggNightText').value;
+            // Toggles are already updated in the object
+
+            localStorage.setItem('lovesite_easter_egg', JSON.stringify(easterEggConfig));
+            showToast('彩蛋设置保存成功！');
+            syncToCloud();
+        }
+
+        function loadEggSettings() {
+            const saved = localStorage.getItem('lovesite_easter_egg');
+            if (saved) {
+                const s = JSON.parse(saved);
+                // Merge with default to avoid breaking on new fields
+                easterEggConfig = { ...easterEggConfig, ...s };
+            }
+
+            // Populate UI
+            document.getElementById('eggToggle')?.classList.toggle('active', easterEggConfig.enabled);
+            document.getElementById('eggStartDate').value = easterEggConfig.startDate;
+            document.getElementById('eggEndDate').value = easterEggConfig.endDate;
+            document.getElementById('eggBadgeText').value = easterEggConfig.badgeText;
+            document.getElementById('eggCheerTitle').value = easterEggConfig.cheerTitle;
+            document.getElementById('eggNightToggle')?.classList.toggle('active', easterEggConfig.nightTipEnabled);
+            document.getElementById('eggNightText').value = easterEggConfig.nightTipText;
+
+            renderEggCheerList();
+            renderEggStickerList();
+        }
+
         // ============ 特效设置 ============
         let effects = {
             petal: true,
@@ -2562,7 +2766,8 @@
                 wishlist: localStorage.getItem('lovesite_wishlist'),
                 effects: localStorage.getItem('lovesite_effects'),
                 sweetwords: localStorage.getItem('lovesite_sweetwords'),
-                footer: localStorage.getItem('lovesite_footer')
+                footer: localStorage.getItem('lovesite_footer'),
+                easterEgg: localStorage.getItem('lovesite_easter_egg')
             };
             
             const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
@@ -2600,8 +2805,11 @@
 
         function clearAllData() {
             if (confirm('确定要清除所有数据吗？此操作不可恢复！')) {
-                const keys = ['basic', 'password', 'theme', 'photos', 'music', 'timeline', 'message', 'wishlist', 'effects', 'sweetwords', 'footer'];
-                keys.forEach(key => localStorage.removeItem('lovesite_' + key));
+                const keys = ['basic', 'password', 'theme', 'photos', 'music', 'timeline', 'message', 'broadcast', 'easter_egg', 'wishlist', 'effects', 'sweetwords', 'footer'];
+                keys.forEach(key => {
+                    if (key === 'easter_egg') localStorage.removeItem('lovesite_easter_egg');
+                    else localStorage.removeItem('lovesite_' + key);
+                });
                 showToast('数据已清除！即将刷新页面...');
                 setTimeout(() => location.reload(), 1500);
             }
@@ -2624,6 +2832,7 @@
             loadTimelineSettings();
             loadMessageSettings();
             loadBroadcastSettings();
+            loadEggSettings();
             loadWishlistSettings();
             loadEffectSettings();
             loadSweetwordsSettings();
