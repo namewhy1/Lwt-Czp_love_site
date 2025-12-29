@@ -59,4 +59,3 @@ export default async function handler(req, res) {
     return json(res, 500, { error: 'Unexpected error', detail: String(e) });
   }
 }
-
